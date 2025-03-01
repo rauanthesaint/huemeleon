@@ -32,4 +32,5 @@ export const Inter = InterFont({
 
 export const GeistMono = Geist_Mono({
     variable: '--font-geist-mono',
+    subsets: ['latin'],
 })
