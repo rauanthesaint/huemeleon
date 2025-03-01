@@ -1,0 +1,22 @@
+:root {
+    --background: #f8f8f9;
+    --background-secondary: #fcfcfd;
+
+    --interactive-background: #f0f0f1;
+    --interactive-background-secondary: #e8e8e9;
+    --interactive-background-tertiary: #e1e1e2;
+
+    --border: #d9d9da;
+    --border-secondary: #47474d;
+    --border-tertiary: #606068;
+
+    --solid: #252527;
+
+    --foreground: #1f1f21;
+    --foreground-secondary: #fcfcfd;
+    --foreground-tertiary: #636365;
+    // HSL
+    --info: 221, 83%, 53%;
+    --error: 0, 72%, 51%;
+    --success: 142, 76%, 36%;
+}

@@ -1,0 +1,29 @@
+.content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    border-radius: 1rem;
+    overflow: hidden;
+    .card {
+        height: 8rem;
+        padding: 12px;
+
+        cursor: pointer;
+
+        position: relative;
+        .curtain {
+            position: absolute;
+            background: var(--background);
+
+            left: 0;
+            bottom: 0;
+            right: 0;
+            overflow: hidden;
+            color: var(--foreground);
+
+            display: grid;
+            place-content: center;
+            place-items: center;
+        }
+    }
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}

@@ -1,0 +1,42 @@
+$item-height: 32px;
+
+.navigation {
+    padding-block: 12px;
+    display: flex;
+    justify-content: center;
+
+    .container {
+        display: flex;
+        gap: 4px;
+        position: relative;
+        .item {
+            padding-inline: 16px;
+            height: $item-height;
+            display: inline-flex;
+            align-items: center;
+            transition: color 100ms linear 100ms;
+            border-radius: 100px;
+            color: var(--foreground-tertiary);
+            &:hover {
+                color: var(--foreground);
+            }
+            &.active {
+                color: var(--foreground-secondary);
+            }
+        }
+    }
+}
+.indicator {
+    position: absolute;
+    height: $item-height;
+    transition: all 0.3s ease-in-out;
+    z-index: -1;
+    background: var(--solid);
+    border-radius: 100px;
+}
+
+// @media screen and (min-width: 426px) {
+//     .navigation {
+//         justify-content: center;
+//     }
+// }

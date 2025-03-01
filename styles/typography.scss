@@ -1,0 +1,28 @@
+.muted {
+    color: var(--foreground-tertiary);
+}
+
+.label {
+    max-width: 400px;
+}
+
+.label.sm {
+    font-size: 14px;
+}
+.label.xs {
+    font-size: 12px;
+}
+
+.heading {
+    font-weight: 500;
+    font-size: 24px;
+    display: block;
+}
+.heading.lg {
+    font-size: 40px;
+    font-weight: 700;
+}
+
+.centered {
+    text-align: center;
+}

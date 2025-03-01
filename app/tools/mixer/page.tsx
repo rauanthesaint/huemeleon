@@ -1,3 +1,3 @@
 export default function Page() {
-    return <main>Index</main>
+    return <main>Mixer</main>
 }

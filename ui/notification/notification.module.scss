@@ -1,0 +1,23 @@
+.component {
+    position: fixed;
+
+    padding: 12px;
+    border-radius: 8px;
+}
+.component.info {
+    background: hsla(var(--info), 0.1);
+    border: 1px solid hsla(var(--info));
+    color: hsla(var(--info));
+}
+.component.left {
+    left: 1rem;
+}
+.component.right {
+    right: 1rem;
+}
+.component.top {
+    top: 1rem;
+}
+.component.bottom {
+    bottom: 1rem;
+}
