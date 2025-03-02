@@ -1,8 +1,9 @@
-import { hexToHSL, hslToHEX } from '@/lib/color'
+import Color from '@/lib/color.class'
+import { hslToHEX } from '@/lib/color.utils'
 import { HEX } from '@/types'
 
-export const generateShades = (color: HEX, steps: number): HEX[] => {
-    const hsl = hexToHSL(color)
+export const generateShades = (color: Color, steps: number): HEX[] => {
+    const hsl = color.toHSL()
     const _ = 90
     // Ограничиваем диапазон светлоты, чтобы избежать чисто черного и белого
     const minLightness = Math.max(5, hsl.lightness - _) // Не даём уйти в абсолютный черный
@@ -14,7 +15,9 @@ export const generateShades = (color: HEX, steps: number): HEX[] => {
         return minLightness + factor * (maxLightness - minLightness)
     })
 
-    return range.map((lightness) =>
-        hslToHEX({ ...hsl, lightness: Math.round(lightness) })
-    )
+    return range
+        .toReversed()
+        .map((lightness) =>
+            hslToHEX({ ...hsl, lightness: Math.round(lightness) })
+        )
 }

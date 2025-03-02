@@ -1,5 +1,5 @@
 .component {
-    width: min(95%, 480px);
+    width: min(95%, 720px);
     padding: 12px;
     border-radius: 1rem;
 
@@ -12,10 +12,16 @@
     }
 
     .body {
+        $padding: 12px;
+        .copy__button {
+            position: absolute;
+            right: $padding + 8px;
+            transform: translateY(8px);
+        }
         .content {
             background: var(--background);
             border-radius: 8px;
-            padding: 12px;
+            padding: $padding;
             max-height: 50dvh;
             overflow: scroll;
             border: 1px solid var(--border);

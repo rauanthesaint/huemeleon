@@ -3,11 +3,10 @@
 
     padding: 12px;
     border-radius: 8px;
+    z-index: 100;
 }
 .component.info {
-    background: hsla(var(--info), 0.1);
-    border: 1px solid hsla(var(--info));
-    color: hsla(var(--info));
+    background: var(--background-secondary);
 }
 .component.left {
     left: 1rem;

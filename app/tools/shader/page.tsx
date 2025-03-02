@@ -4,21 +4,23 @@ import { ColorScale, Container } from '@/components'
 import { Button, Input } from '@/ui'
 import { Controller, useForm } from 'react-hook-form'
 import styles from './page.module.scss'
-import { getRandomHexColor } from '@/utils/generateShades'
-import { DiceFaces03Icon } from '@/public/icons'
+import { DiceFaces03Icon, HashtagIcon } from '@/public/icons'
 import { ChangeEvent } from 'react'
 import ScaleExport from '@/components/scale-export/scale-export'
+import Color from '@/lib/color.class'
+import { getRandomHexColor } from '@/lib/color.utils'
 type FormValues = {
     color: string
 }
 export default function Page() {
     const { setValue, control, watch } = useForm<FormValues>({
         mode: 'onChange',
-        defaultValues: { color: '#3AC061' },
+        defaultValues: { color: '3AC061' },
     })
 
     const handleClick = () => {
-        setValue('color', getRandomHexColor())
+        const randomColor = getRandomHexColor()
+        setValue('color', randomColor.toHEX().replace('#', ''))
     }
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +42,8 @@ export default function Page() {
                         name="color"
                         render={({ field }) => (
                             <Input
-                                placeholder="#000000"
+                                leading={<HashtagIcon />}
+                                placeholder="000000"
                                 {...field}
                                 onChange={handleChange}
                             />
@@ -54,10 +57,10 @@ export default function Page() {
                     {/* <Button isIcon variant="secondary">
                         <Bookmark01Icon />
                     </Button> */}
-                    <ScaleExport data={watch('color')} />
+                    <ScaleExport data={Color.fromHEX(watch('color'))} />
                 </div>
             </section>
-            <ColorScale base={watch('color')} />
+            <ColorScale base={Color.fromHEX(watch('color'))} />
         </Container>
     )
 }

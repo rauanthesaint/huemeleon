@@ -1,5 +1,3 @@
-@import '../global.scss';
-
 .inputWrap {
     display: flex;
     flex-direction: column;
@@ -8,7 +6,7 @@
 
 .error {
     font-size: 14px;
-    color: $color-error;
+    color: hsl(var(--error));
 }
 
 .inputContainer {

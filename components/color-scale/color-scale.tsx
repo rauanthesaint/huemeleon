@@ -1,48 +1,45 @@
 'use client'
 
-import { HEX } from '@/types'
-
 import styles from './color-scale.module.scss'
-import { generateShades } from '@/utils/color.class'
-import { getContrast } from '@/lib/color'
+
+import { generateShades, getContrast } from '@/lib/color.utils'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { GeistMono } from '@/lib/font'
 import { AnimatePresence, motion, Variants } from 'framer-motion'
 import clsx from 'clsx'
+import Color from '@/lib/color.class'
 
-const ColorScale = ({ base }: { base: HEX }) => {
+const ColorScale = ({ base }: { base: Color }) => {
     const shades = generateShades(base, 12)
     const [show, setShow] = useState<number | null>(null)
 
-    const handleClick = (color: HEX, index: number) => {
+    const handleClick = (color: Color, index: number) => {
         navigator.clipboard
-            .writeText(color)
+            .writeText(color.toHEX())
             .then(() => {
                 setShow(index)
             })
             .catch((err) => console.error('Failed to copy:', err))
     }
-
     return (
         <section className={clsx(styles.content, GeistMono.className)}>
             {shades.map((color, index) => {
-                const contrast = getContrast(color, '#ffffff')
-                const foreground =
-                    contrast < 0.1 ? 'var(--foreground)' : 'var(--background)'
+                const contrast = getContrast(color, Color.fromHEX('#ffffff'))
+                const foreground = contrast < 3 ? 'black' : 'white'
                 return (
                     <article
                         onClick={() => handleClick(color, index)}
                         className={styles.card}
                         key={index}
                         style={{
-                            backgroundColor: color,
+                            backgroundColor: color.toHEX(),
                             color: foreground,
                         }}
                     >
-                        <span>{color.toUpperCase()}</span>
+                        <span>{color.toHEX().toUpperCase()}</span>
                         <p className="label sm">{index + 1}</p>
                         <Curtain
-                            message={`${color.toUpperCase()} copied`}
+                            message={`${color.toHEX().toUpperCase()} copied`}
                             show={show === index}
                             onHide={setShow}
                         />
@@ -68,8 +65,8 @@ const Curtain: React.FC<NotificationProps> = ({ message, onHide, show }) => {
     }, [show, onHide])
 
     const ANIMATION: Variants = {
-        active: { top: 0, height: '100%' },
-        inactive: { top: 'auto', height: 0 },
+        active: { opacity: 1 },
+        inactive: { opacity: 0 },
     }
 
     return (

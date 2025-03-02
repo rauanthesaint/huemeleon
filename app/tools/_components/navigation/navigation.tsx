@@ -11,6 +11,7 @@ const LinkArray = [
     { title: 'Picker', href: '/tools/development' },
     { title: 'Palette', href: '/tools/development' },
     { title: 'Mixer', href: '/tools/development' },
+    // { title: 'Contrast', href: '/tools/contrast' },
 ]
 
 export default function Navigation() {

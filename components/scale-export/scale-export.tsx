@@ -3,17 +3,32 @@ import { Button, Modal } from '@/ui'
 import { useState, Fragment, useRef } from 'react'
 
 import styles from './scale-export.module.scss'
-import { HEX } from '@/types'
 
 import { GeistMono } from '@/lib/font'
-import { generateShades } from '@/utils/color.class'
 import Notification from '@/ui/notification/notification'
+import { Copy01Icon } from '@/public/icons'
+import Color from '@/lib/color.class'
+import { generateShades } from '@/lib/color.utils'
 
-export default function ScaleExport({ data }: { data: HEX }) {
+type Tab = {
+    title: string
+}
+const tabs: Tab[] = [
+    {
+        title: 'HEX',
+    },
+    {
+        title: 'HSL',
+    },
+]
+
+export default function ScaleExport({ data }: { data: Color }) {
     const shades = generateShades(data, 12)
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const contentRef = useRef<HTMLUListElement>(null)
     const [copied, setIsCopied] = useState<boolean>(false)
+
+    const [tab, setTab] = useState<number>(0)
 
     const handleClose = () => setIsOpen(!isOpen)
 
@@ -37,6 +52,11 @@ export default function ScaleExport({ data }: { data: HEX }) {
     return (
         <Fragment>
             <Button onClick={handleClose}>Export</Button>
+            <Notification
+                show={copied}
+                onHide={setIsCopied}
+                message={'Copied'}
+            />
             <Modal
                 className={styles.component}
                 isOpen={isOpen}
@@ -44,17 +64,28 @@ export default function ScaleExport({ data }: { data: HEX }) {
             >
                 <header>
                     <span className="heading">Export</span>
-                    <Button variant="secondary" size="sm" onClick={handleCopy}>
-                        Copy
-                    </Button>
                 </header>
-                <Notification
-                    show={copied}
-                    onHide={setIsCopied}
-                    message={'Copied'}
-                />
+
+                <section>
+                    {tabs.map((elem, index) => {
+                        return (
+                            <button onClick={() => setTab(index)} key={index}>
+                                {elem.title}
+                            </button>
+                        )
+                    })}
+                </section>
 
                 <section className={styles.body}>
+                    <Button
+                        isIcon
+                        variant="secondary"
+                        size="sm"
+                        onClick={handleCopy}
+                        className={styles.copy__button}
+                    >
+                        <Copy01Icon />
+                    </Button>
                     <ul className={styles.content} ref={contentRef}>
                         {shades.map((color, index) => {
                             return (
@@ -62,7 +93,10 @@ export default function ScaleExport({ data }: { data: HEX }) {
                                     <span style={{ color: '#1a6aff' }}>
                                         --color-{index + 1}
                                     </span>
-                                    :{color}
+                                    :{' '}
+                                    {tab === 0
+                                        ? color.toHEX()
+                                        : color.toCssHSL()}
                                 </li>
                             )
                         })}
