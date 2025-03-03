@@ -1,5 +1,4 @@
 export { default as Container } from './container/container'
-export { default as Sidebar } from './sidebar/sidebar'
 export { default as ColorScale } from './color-scale/color-scale'
 
 //
