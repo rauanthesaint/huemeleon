@@ -1,26 +1,19 @@
-.controller {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    gap: 8px;
-
-    .block {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        width: 100%;
+.page {
+    position: relative;
+    .controller {
+        position: fixed;
+        bottom: 4rem;
+        left: 50%;
+        transform: translateX(-50%);
     }
-
-    margin-bottom: 2rem;
 }
 
-@media screen and (min-width: 540) {
-    .controller {
-        flex-direction: row;
-        align-items: center;
-
-        .block {
-            width: max-content;
+@media screen and (min-width: 500px) {
+    .page {
+        .controller {
+            position: static;
+            margin-bottom: 2rem;
+            transform: unset;
         }
     }
 }

@@ -1,4 +1,4 @@
-import { HEX, HSL, RGB } from '@/types'
+import { HEX, HSL, LCH, RGB } from '@/types'
 
 export default class Color {
     private value: RGB
@@ -34,6 +34,11 @@ export default class Color {
         })
     }
 
+    private normalizeRGB() {
+        const { red, green, blue } = this.value
+        return { red: red / 255, green: green / 255, blue: blue / 255 }
+    }
+
     // RGB => RGB
     toRGB(): RGB {
         return this.value
@@ -49,13 +54,10 @@ export default class Color {
     }
     // RGB => HSL
     toHSL(): HSL {
-        const { red, green, blue } = this.value
-        const r = red / 255
-        const g = green / 255
-        const b = blue / 255
+        const { red, green, blue } = this.normalizeRGB()
 
-        const max = Math.max(r, g, b)
-        const min = Math.min(r, g, b)
+        const max = Math.max(red, green, blue)
+        const min = Math.min(red, green, blue)
         const delta = max - min
 
         let hue = 0
@@ -67,14 +69,14 @@ export default class Color {
                 lightness > 0.5 ? delta / (2 - max - min) : delta / (max + min)
 
             switch (max) {
-                case r:
-                    hue = ((g - b) / delta + (g < b ? 6 : 0)) * 60
+                case red:
+                    hue = ((green - blue) / delta + (green < blue ? 6 : 0)) * 60
                     break
-                case g:
-                    hue = ((b - r) / delta + 2) * 60
+                case green:
+                    hue = ((blue - red) / delta + 2) * 60
                     break
-                case b:
-                    hue = ((r - g) / delta + 4) * 60
+                case blue:
+                    hue = ((red - green) / delta + 4) * 60
                     break
             }
         }
@@ -86,9 +88,47 @@ export default class Color {
         }
     }
 
+    toLCH(): LCH {
+        const { red, green, blue } = this.normalizeRGB()
+        const toLinear = (c: number) =>
+            c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)
+        const rLin = toLinear(red) * 100,
+            gLin = toLinear(green) * 100,
+            bLin = toLinear(blue) * 100
+
+        const X = rLin * 0.4124564 + gLin * 0.3575761 + bLin * 0.1804375
+        const Y = rLin * 0.2126729 + gLin * 0.7151522 + bLin * 0.072175
+        const Z = rLin * 0.0193339 + gLin * 0.119192 + bLin * 0.9503041
+
+        // Convert XYZ to Lab
+        const refX = 95.047,
+            refY = 100.0,
+            refZ = 108.883
+        const toLab = (c: number) =>
+            c > 0.008856 ? Math.pow(c, 1 / 3) : 7.787 * c + 16 / 116
+
+        const L = 116 * toLab(Y / refY) - 16
+        const a = 500 * (toLab(X / refX) - toLab(Y / refY))
+        const b_ = 200 * (toLab(Y / refY) - toLab(Z / refZ))
+
+        // Convert Lab to LCH
+        const C = Math.sqrt(a * a + b_ * b_)
+        let H = Math.atan2(b_, a) * (180 / Math.PI)
+        if (H < 0) H += 360
+
+        return { lightness: L, chroma: C, hue: H }
+    }
+
     toFormattedHSL(): string {
         const hsl = this.toHSL()
         return `${hsl.hue}°, ${hsl.saturation}%, ${hsl.lightness}%`
+    }
+
+    toCssLCH(): string {
+        const { lightness, chroma, hue } = this.toLCH()
+        return `lch(${lightness.toFixed(2)}% ${chroma.toFixed(2)} ${hue.toFixed(
+            2
+        )}deg)`
     }
 
     toCssHSL(): string {

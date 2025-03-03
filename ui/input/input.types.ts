@@ -13,7 +13,9 @@ export interface InputProps
     hint?: React.ReactNode | string
     label?: React.ReactNode | string
 
-    leading?: React.ReactNode
+    icon?: React.ReactNode
+
+    action?: React.ReactNode
 
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 

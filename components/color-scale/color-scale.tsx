@@ -12,6 +12,7 @@ import Color from '@/lib/color.class'
 const ColorScale = ({ base }: { base: Color }) => {
     const shades = generateShades(base, 12)
     const [show, setShow] = useState<number | null>(null)
+    const KEYS = [50, 100, 150, 200, 300, 400, 500, 600, 700, 800, 900, 950]
 
     const handleClick = (color: Color, index: number) => {
         navigator.clipboard
@@ -25,7 +26,10 @@ const ColorScale = ({ base }: { base: Color }) => {
         <section className={clsx(styles.content, GeistMono.className)}>
             {shades.map((color, index) => {
                 const contrast = getContrast(color, Color.fromHEX('#ffffff'))
-                const foreground = contrast < 3 ? 'black' : 'white'
+                const foreground =
+                    contrast < 3
+                        ? shades[shades.length - 2].toHEX()
+                        : shades[0].toHEX()
                 return (
                     <article
                         onClick={() => handleClick(color, index)}
@@ -36,8 +40,10 @@ const ColorScale = ({ base }: { base: Color }) => {
                             color: foreground,
                         }}
                     >
-                        <span>{color.toHEX().toUpperCase()}</span>
-                        <p className="label sm">{index + 1}</p>
+                        <span>{KEYS[index]}</span>
+                        <p className="label sm">
+                            {color.toHEX().toUpperCase()}
+                        </p>
                         <Curtain
                             message={`${color.toHEX().toUpperCase()} copied`}
                             show={show === index}

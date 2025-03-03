@@ -1,6 +1,3 @@
-export type HEX = string
-export type RGB = { red: number; green: number; blue: number }
-export type HSL = { hue: number; saturation: number; lightness: number }
 export type HSV = { hue: number; saturation: number; value: number }
 export type CMYK = {
     cyan: number
@@ -8,4 +5,12 @@ export type CMYK = {
     yellow: number
     key: number
 }
+
+// CSS
+export type HEX = string
+export type RGB = { red: number; green: number; blue: number }
+export type HSL = { hue: number; saturation: number; lightness: number }
 export type LCH = { lightness: number; chroma: number; hue: number }
+export type HWB = { hue: number; whiteness: number; blackness: number }
+
+// LAB OKLCH OKLAB COLOR FUNCTION

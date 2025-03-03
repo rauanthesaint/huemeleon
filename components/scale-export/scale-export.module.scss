@@ -25,6 +25,19 @@
             max-height: 50dvh;
             overflow: scroll;
             border: 1px solid var(--border);
+
+            font-size: 14px;
+            white-space: nowrap;
+
+            .comment {
+                color: #4ba63f;
+            }
+            .variable__name {
+                color: #4fb9fe;
+            }
+            .color {
+                color: #b28878;
+            }
         }
     }
 }

@@ -47,6 +47,10 @@ export const siteConfig: {
             title: 'Contrast',
             href: '/services/contrast',
         },
+        {
+            title: 'Palette',
+            href: '/services/palette',
+        },
     ],
     links: [
         {

@@ -15,12 +15,11 @@
     --background-secondary: #fcfcfd;
 
     --interactive-background: #f0f0f1;
-    --active-background: #e8e8e9;
+    --active-background: #f0f0f0;
     --interactive-background-tertiary: var(--color-blue-100);
-    // --interactive-background-tertiary: #e1e1e2;
 
     --border: #d9d9da;
-    --border-secondary: #47474d;
+    --border-secondary: #e2e2e2;
     --border-tertiary: #606068;
 
     --solid: #252527;
@@ -34,15 +33,21 @@
     --success: 142, 76%, 36%;
 
     --shadow: rgba(149, 157, 165, 0.2);
+
+    --min-value: 4px;
 }
 
 [data-theme='dark'] {
     --background: #050505;
     --background-secondary: #090909;
     --border: #181818;
+    --border-secondary: #222222;
     --foreground: #f5f5f5;
+    --foreground-secondary: #050505;
 
-    --active-background: #252527;
-    // --shadow: rgba(149, 157, 165, 0.2);
+    --active-background: #121212;
+    --active-background-secondary: #181818;
+
+    --solid: #f5f5f5;
     --shadow: #0c0c0c;
 }

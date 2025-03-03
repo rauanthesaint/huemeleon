@@ -1,12 +1,11 @@
 'use client'
 
-import { ColorScale, Container } from '@/components'
+import { Container, Shades } from '@/components'
 import { Button, Input } from '@/ui'
 import { Controller, useForm } from 'react-hook-form'
 import styles from './page.module.scss'
-import { DiceFaces03Icon, HashtagIcon } from '@/public/icons'
+import { DiceFaces03Icon, PaintBoardIcon } from '@/public/icons'
 import { ChangeEvent } from 'react'
-import ScaleExport from '@/components/scale-export/scale-export'
 import Color from '@/lib/color.class'
 import { getRandomHexColor } from '@/lib/color.utils'
 type FormValues = {
@@ -27,40 +26,31 @@ export default function Page() {
         setValue('color', event.target.value.toUpperCase())
     }
     return (
-        <Container as={'main'}>
-            <section className={styles.header}>
-                <span className="heading lg ">CSS Color scale generator</span>
-                <p className="muted label">
-                    Generate scales by entering hex color or hit the Random
-                    button
-                </p>
-            </section>
-            <section className={styles.controller}>
-                <div className={styles.block}>
-                    <Controller
-                        control={control}
-                        name="color"
-                        render={({ field }) => (
-                            <Input
-                                leading={<HashtagIcon />}
-                                placeholder="000000"
-                                {...field}
-                                onChange={handleChange}
-                            />
-                        )}
-                    />
-                    <Button isIcon onClick={handleClick} variant="secondary">
-                        <DiceFaces03Icon />
-                    </Button>
-                </div>
-                <div className={styles.block}>
-                    {/* <Button isIcon variant="secondary">
-                        <Bookmark01Icon />
-                    </Button> */}
-                    <ScaleExport data={Color.fromHEX(watch('color'))} />
-                </div>
-            </section>
-            <ColorScale base={Color.fromHEX(watch('color'))} />
+        <Container as={'main'} className={styles.page}>
+            <Container pref={100} max={320} className={styles.controller}>
+                <Controller
+                    control={control}
+                    name="color"
+                    render={({ field }) => (
+                        <Input
+                            icon={<PaintBoardIcon />}
+                            placeholder="000000"
+                            {...field}
+                            onChange={handleChange}
+                            action={
+                                <Button
+                                    isIcon
+                                    onClick={handleClick}
+                                    variant="secondary"
+                                >
+                                    <DiceFaces03Icon />
+                                </Button>
+                            }
+                        />
+                    )}
+                />
+            </Container>
+            <Shades name="Primary" base={Color.fromHEX(watch('color'))} />
         </Container>
     )
 }

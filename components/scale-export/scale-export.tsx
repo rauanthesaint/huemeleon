@@ -10,13 +10,20 @@ import { Copy01Icon } from '@/public/icons'
 import Color from '@/lib/color.class'
 import { generateShades } from '@/lib/color.utils'
 
-export default function ScaleExport({ data }: { data: Color }) {
+export default function ScaleExport({
+    data,
+    name,
+}: {
+    data: Color
+    name: string
+}) {
     const shades = generateShades(data, 12)
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const contentRef = useRef<HTMLUListElement>(null)
     const [copied, setIsCopied] = useState<boolean>(false)
 
     const handleClose = () => setIsOpen(!isOpen)
+    const KEYS = [50, 100, 150, 200, 300, 400, 500, 600, 700, 800, 900, 950]
 
     const handleCopy = () => {
         if (contentRef.current) {
@@ -70,10 +77,18 @@ export default function ScaleExport({ data }: { data: Color }) {
                                             key={index}
                                             className={GeistMono.className}
                                         >
-                                            <span style={{ color: '#1a6aff' }}>
-                                                --color-{index + 1}
+                                            <span
+                                                className={
+                                                    styles.variable__name
+                                                }
+                                            >
+                                                --color-{name.toLowerCase()}-
+                                                {KEYS[index]}
                                             </span>
-                                            : {color.toHEX()}
+                                            :{' '}
+                                            <span className={styles.color}>
+                                                {color.toHEX()}
+                                            </span>
                                         </li>
                                     )
                                 })}
@@ -87,10 +102,18 @@ export default function ScaleExport({ data }: { data: Color }) {
                                             key={index}
                                             className={GeistMono.className}
                                         >
-                                            <span style={{ color: '#1a6aff' }}>
-                                                --color-{index + 1}
+                                            <span
+                                                className={
+                                                    styles.variable__name
+                                                }
+                                            >
+                                                --color-{name.toLowerCase()}-
+                                                {KEYS[index]}
                                             </span>
-                                            : {color.toCssHSL()}
+                                            :{' '}
+                                            <span className={styles.color}>
+                                                {color.toCssHSL()}
+                                            </span>
                                         </li>
                                     )
                                 })}
@@ -104,10 +127,43 @@ export default function ScaleExport({ data }: { data: Color }) {
                                             key={index}
                                             className={GeistMono.className}
                                         >
-                                            <span style={{ color: '#1a6aff' }}>
-                                                --color-{index + 1}
+                                            <span
+                                                className={
+                                                    styles.variable__name
+                                                }
+                                            >
+                                                --color-{name.toLowerCase()}-
+                                                {KEYS[index]}
                                             </span>
-                                            : {color.toCssRGB()}
+                                            :{' '}
+                                            <span className={styles.color}>
+                                                {color.toCssRGB()}
+                                            </span>
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                        </Tab>
+                        <Tab title="LCH">
+                            <ul className={styles.content} ref={contentRef}>
+                                {shades.map((color, index) => {
+                                    return (
+                                        <li
+                                            key={index}
+                                            className={GeistMono.className}
+                                        >
+                                            <span
+                                                className={
+                                                    styles.variable__name
+                                                }
+                                            >
+                                                --color-{name.toLowerCase()}-
+                                                {KEYS[index]}
+                                            </span>
+                                            :{' '}
+                                            <span className={styles.color}>
+                                                {color.toCssLCH()}
+                                            </span>
                                         </li>
                                     )
                                 })}

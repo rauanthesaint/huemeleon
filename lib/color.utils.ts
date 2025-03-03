@@ -37,8 +37,11 @@ export function getRandomHexColor(): Color {
     )
 }
 
-const hexToLuminance = (color: Color): number => {
+export const getLuminance = (color: Color): number => {
     let { red, green, blue } = color.toRGB()
+    red /= 255
+    green /= 255
+    blue /= 255
     red = red <= 0.03928 ? red / 12.92 : Math.pow((red + 0.055) / 1.055, 2.4)
     green =
         green <= 0.03928
@@ -46,12 +49,15 @@ const hexToLuminance = (color: Color): number => {
             : Math.pow((green + 0.055) / 1.055, 2.4)
     blue =
         blue <= 0.03928 ? blue / 12.92 : Math.pow((blue + 0.055) / 1.055, 2.4)
-    return 0.2126 * red + 0.7152 * green + 0.0722 * blue
+    return (
+        Math.round((0.2126 * red + 0.7152 * green + 0.0722 * blue) * 1000) /
+        1000
+    )
 }
 
 export const getContrast = (color1: Color, color2: Color): number => {
-    const lum1 = hexToLuminance(color1)
-    const lum2 = hexToLuminance(color2)
+    const lum1 = getLuminance(color1)
+    const lum2 = getLuminance(color2)
     const contrast =
         (Math.max(lum1, lum2) + 0.05) / (Math.min(lum1, lum2) + 0.05)
     return Math.round(contrast * 100) / 100 // Возвращаем корректный коэффициент контраста

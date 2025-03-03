@@ -9,7 +9,7 @@ import '@/styles/globals.scss'
 import '@/styles/normalize.scss'
 import '@/styles/variables.scss'
 import '@/styles/typography.scss'
-import { Header } from '@/components'
+import { Footer, Header, ScrollTop } from '@/components'
 
 // METADATA
 export const metadata: Metadata = {
@@ -29,6 +29,8 @@ export default function RootLayout({
                 <ThemeProvider>
                     <Header />
                     {children}
+                    <Footer />
+                    <ScrollTop />
                     <SpeedInsights />
                 </ThemeProvider>
             </body>

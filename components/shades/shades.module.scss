@@ -1,0 +1,18 @@
+.palette {
+    .palette__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+        border-radius: calc(var(--min-value) * 2);
+        overflow: hidden;
+        .gridItem {
+            height: 5rem;
+            padding: 12px;
+        }
+    }
+}

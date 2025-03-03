@@ -1,0 +1,26 @@
+.footer {
+    background: var(--background-secondary);
+    border-top: 1px solid var(--border);
+    .content {
+        padding-block: 1rem;
+
+        .column {
+            .list {
+                margin-top: 12px;
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+                .item {
+                    color: var(--foreground-tertiary);
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+    .bottom {
+        padding-block: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+}

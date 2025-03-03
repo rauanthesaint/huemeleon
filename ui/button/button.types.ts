@@ -1,14 +1,17 @@
-import { GeneralProps, WithChildrenProps } from "../lib/types";
+import { CSSProperties } from 'react'
+import { GeneralProps, WithChildrenProps } from '../lib/types'
 
 export interface ButtonProps extends GeneralProps, WithChildrenProps {
-  type?: "submit" | "button" | "reset";
-  size?: "sm" | "md";
-  variant?: "primary" | "secondary" | "tertiary";
+    type?: 'submit' | 'button' | 'reset'
+    size?: 'sm' | 'md'
+    variant?: 'primary' | 'secondary' | 'tertiary'
 
-  // Booleans
-  isIcon?: boolean;
-  isFullWidth?: boolean;
+    // Booleans
+    isIcon?: boolean
+    isFullWidth?: boolean
 
-  // Event Handlers
-  onClick?: () => void;
+    style?: CSSProperties
+
+    // Event Handlers
+    onClick?: () => void
 }

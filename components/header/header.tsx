@@ -11,8 +11,7 @@ import { siteConfig } from '@/config/site'
 import { usePathname } from 'next/navigation'
 import clsx from 'clsx'
 import Theme from '../theme/theme'
-// import { Button } from '@/ui'
-// import { Menu09Icon } from '@/public/icons'
+import { PlusSignIcon } from '@/public/icons'
 
 export default function Header() {
     const pathname = usePathname()
@@ -27,13 +26,6 @@ export default function Header() {
                         height={24}
                         alt="Huemeleon Logo"
                     />
-                    {/* <Button
-                        className={styles.toggleContent}
-                        variant="tertiary"
-                        isIcon
-                    >
-                        <Menu09Icon />
-                    </Button> */}
                     <section className={styles.content}>
                         <div className={styles.block}>
                             {siteConfig.navigation.map((link, index) => {
@@ -86,6 +78,11 @@ export default function Header() {
                             </Link>
                         )
                     })}
+
+                    <Link className={styles.item} href="/suggest">
+                        <PlusSignIcon className={styles.sm} />
+                        Suggest Tool
+                    </Link>
                 </section>
             </Container>
         </header>

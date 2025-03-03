@@ -1,6 +1,7 @@
 import clsx from 'clsx'
 import { InputProps } from './input.types'
 import styles from './input.module.scss'
+import { cloneElement, isValidElement, ReactElement } from 'react'
 
 const Input: React.FC<InputProps> = ({
     id,
@@ -10,15 +11,22 @@ const Input: React.FC<InputProps> = ({
     type = 'text',
     placeholder,
     defaultValue,
-    leading,
+    icon: leading,
     label,
     hint,
     error,
     ref,
     value,
+    action,
 
     onChange,
 }) => {
+    const actionComponent =
+        (isValidElement(action) &&
+            cloneElement(action as ReactElement<{ className?: string }>, {
+                className: styles.action,
+            })) ||
+        undefined
     return (
         <label className={styles.inputWrap} htmlFor={name}>
             {label && <span className={styles.label}>{label}</span>}
@@ -36,6 +44,7 @@ const Input: React.FC<InputProps> = ({
                     className={clsx(styles.input, className)}
                     onChange={onChange}
                 />
+                {actionComponent}
             </div>
             {hint && <p className={styles.hint}>{hint}</p>}
             {error && <p className={styles.error}>{error}</p>}

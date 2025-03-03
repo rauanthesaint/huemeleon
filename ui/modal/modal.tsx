@@ -1,4 +1,5 @@
-import { Fragment } from 'react'
+'use client'
+import { Fragment, useEffect } from 'react'
 import styles from './modal.module.scss'
 import { AnimatePresence, motion, Variants } from 'framer-motion'
 import clsx from 'clsx'
@@ -26,6 +27,20 @@ const Modal: React.FC<ModalProps> = ({
     onClose,
     className,
 }) => {
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape' && onClose) {
+                onClose()
+            }
+        }
+        if (isOpen) {
+            window.addEventListener('keydown', handleKeyDown)
+        }
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown)
+        }
+    }, [isOpen, onClose])
+
     return (
         <AnimatePresence>
             {isOpen && (
@@ -35,7 +50,7 @@ const Modal: React.FC<ModalProps> = ({
                         initial="inactive"
                         animate="active"
                         exit="inactive"
-                        className={clsx(styles.modal, className)}
+                        className={clsx(styles.modal, 'no-scroll', className)}
                     >
                         {children}
                     </motion.div>

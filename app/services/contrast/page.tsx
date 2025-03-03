@@ -38,7 +38,7 @@ export default function Page() {
                             control={control}
                             render={({ field }) => (
                                 <Input
-                                    leading={<HashtagIcon />}
+                                    icon={<HashtagIcon />}
                                     placeholder="000000"
                                     label="Text color"
                                     {...field}
@@ -50,7 +50,7 @@ export default function Page() {
                             control={control}
                             render={({ field }) => (
                                 <Input
-                                    leading={<HashtagIcon />}
+                                    icon={<HashtagIcon />}
                                     placeholder="000000"
                                     label="Background color"
                                     {...field}

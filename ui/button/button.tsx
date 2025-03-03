@@ -13,10 +13,12 @@ const Button: React.FC<ButtonProps> = ({
     size = 'md',
     type = 'button',
     onClick,
+    style,
 }) => {
     return (
         <button
             id={id}
+            style={style}
             className={clsx(
                 styles.button,
                 styles[size],

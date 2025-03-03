@@ -2,8 +2,6 @@
     background: var(--background-secondary);
     border-bottom: 1px solid var(--border);
 
-    margin-bottom: 3rem;
-
     .item {
         font-size: 14px;
         color: var(--foreground-tertiary);
@@ -11,10 +9,22 @@
             color: var(--foreground);
         }
 
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        white-space: nowrap;
+
         svg {
             $size: 20px;
             width: $size;
             height: $size;
+
+            &.sm {
+                $size-sm: 16px;
+                width: $size-sm;
+                height: $size-sm;
+            }
         }
     }
 
