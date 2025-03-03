@@ -1,5 +1,5 @@
 'use client'
-import { Button, Modal } from '@/ui'
+import { Button, Modal, Tab, Tabs } from '@/ui'
 import { useState, Fragment, useRef } from 'react'
 
 import styles from './scale-export.module.scss'
@@ -10,25 +10,11 @@ import { Copy01Icon } from '@/public/icons'
 import Color from '@/lib/color.class'
 import { generateShades } from '@/lib/color.utils'
 
-type Tab = {
-    title: string
-}
-const tabs: Tab[] = [
-    {
-        title: 'HEX',
-    },
-    {
-        title: 'HSL',
-    },
-]
-
 export default function ScaleExport({ data }: { data: Color }) {
     const shades = generateShades(data, 12)
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const contentRef = useRef<HTMLUListElement>(null)
     const [copied, setIsCopied] = useState<boolean>(false)
-
-    const [tab, setTab] = useState<number>(0)
 
     const handleClose = () => setIsOpen(!isOpen)
 
@@ -64,43 +50,70 @@ export default function ScaleExport({ data }: { data: Color }) {
             >
                 <header>
                     <span className="heading">Export</span>
-                </header>
-
-                <section>
-                    {tabs.map((elem, index) => {
-                        return (
-                            <button onClick={() => setTab(index)} key={index}>
-                                {elem.title}
-                            </button>
-                        )
-                    })}
-                </section>
-
-                <section className={styles.body}>
                     <Button
                         isIcon
                         variant="secondary"
                         size="sm"
                         onClick={handleCopy}
-                        className={styles.copy__button}
                     >
                         <Copy01Icon />
                     </Button>
-                    <ul className={styles.content} ref={contentRef}>
-                        {shades.map((color, index) => {
-                            return (
-                                <li key={index} className={GeistMono.className}>
-                                    <span style={{ color: '#1a6aff' }}>
-                                        --color-{index + 1}
-                                    </span>
-                                    :{' '}
-                                    {tab === 0
-                                        ? color.toHEX()
-                                        : color.toCssHSL()}
-                                </li>
-                            )
-                        })}
-                    </ul>
+                </header>
+
+                <section className={styles.body}>
+                    <Tabs>
+                        <Tab title="HEX">
+                            <ul className={styles.content} ref={contentRef}>
+                                {shades.map((color, index) => {
+                                    return (
+                                        <li
+                                            key={index}
+                                            className={GeistMono.className}
+                                        >
+                                            <span style={{ color: '#1a6aff' }}>
+                                                --color-{index + 1}
+                                            </span>
+                                            : {color.toHEX()}
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                        </Tab>
+                        <Tab title="HSL">
+                            <ul className={styles.content} ref={contentRef}>
+                                {shades.map((color, index) => {
+                                    return (
+                                        <li
+                                            key={index}
+                                            className={GeistMono.className}
+                                        >
+                                            <span style={{ color: '#1a6aff' }}>
+                                                --color-{index + 1}
+                                            </span>
+                                            : {color.toCssHSL()}
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                        </Tab>
+                        <Tab title="RGB">
+                            <ul className={styles.content} ref={contentRef}>
+                                {shades.map((color, index) => {
+                                    return (
+                                        <li
+                                            key={index}
+                                            className={GeistMono.className}
+                                        >
+                                            <span style={{ color: '#1a6aff' }}>
+                                                --color-{index + 1}
+                                            </span>
+                                            : {color.toCssRGB()}
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                        </Tab>
+                    </Tabs>
                 </section>
             </Modal>
         </Fragment>

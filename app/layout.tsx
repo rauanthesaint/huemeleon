@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
-import { Inter, NeutralSans, GeistMono } from '@/lib/font'
+import { Inter, Geist, GeistMono } from '@/lib/font'
 import { siteConfig } from '@/config/site'
+import { ThemeProvider } from 'next-themes'
 
+import { SpeedInsights } from '@vercel/speed-insights/next'
 // GLOBAL STYLES
 import '@/styles/globals.scss'
 import '@/styles/normalize.scss'
@@ -20,12 +22,15 @@ export default function RootLayout({
     children: React.ReactNode
 }>) {
     return (
-        <html lang="en">
+        <html suppressHydrationWarning lang="en">
             <body
-                className={`${NeutralSans.variable} ${Inter.variable} ${GeistMono.variable}`}
+                className={`${Geist.variable} ${Inter.variable} ${GeistMono.variable}`}
             >
-                <Header />
-                {children}
+                <ThemeProvider>
+                    <Header />
+                    {children}
+                    <SpeedInsights />
+                </ThemeProvider>
             </body>
         </html>
     )

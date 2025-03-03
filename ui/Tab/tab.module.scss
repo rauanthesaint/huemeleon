@@ -1,0 +1,21 @@
+.container {
+    .nav {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin-bottom: 8px;
+        .tabButton {
+            padding: 6px 8px;
+            color: var(--foreground-tertiary);
+            &:hover {
+                color: var(--foreground);
+            }
+
+            &.activeTab {
+                background: var(--interactive-background);
+                color: var(--foreground);
+                border-radius: 6px;
+            }
+        }
+    }
+}

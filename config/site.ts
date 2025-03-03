@@ -1,52 +1,76 @@
-import { ElementType } from 'react'
 import {
-    Bookmark01Icon,
-    ColorPickerIcon,
-    ColorsIcon,
-    PaintBoardIcon,
-    Settings02Icon,
-} from '@/public/icons' // Default icon
+    Book02Icon,
+    CustomerService01Icon,
+    Github01Icon,
+    News01Icon,
+    TelegramIcon,
+} from '@/public/icons'
 
 type NavigationItem = {
     title: string
     href: string
-    icon: ElementType // Mark as optional
+}
+
+type LinkItem = {
+    title?: string
+    href: string
+    icon: React.ElementType
 }
 
 export const siteConfig: {
-    navigation: NavigationItem[]
     title: string
-    settings: NavigationItem[]
+    services: NavigationItem[]
+    links: LinkItem[]
+    navigation: NavigationItem[]
 } = {
     title: 'Huemeleon',
     navigation: [
         {
-            title: 'Picker',
-            href: '/dashboard/picker',
-            icon: ColorPickerIcon,
-        },
-        {
-            title: 'Shader',
-            href: '/dashboard/shader',
-            icon: ColorsIcon,
-        },
-        {
-            title: 'Palettes',
-            href: '/dashboard/palettes',
-            icon: PaintBoardIcon,
+            title: 'Services',
+            href: '/services/shader',
         },
     ],
-
-    settings: [
-        // {
-        //     title: 'Saved Palettes',
-        //     href: '/profile/palettes',
-        //     icon: Bookmark01Icon,
-        // },
-        // {
-        //     title: 'Settings',
-        //     href: '/settings',
-        //     icon: Settings02Icon,
-        // },
+    services: [
+        {
+            title: 'Shader',
+            href: '/services/shader',
+        },
+        {
+            title: 'Picker',
+            href: '/services/picker',
+        },
+        {
+            title: 'Mixer',
+            href: '/services/mixer',
+        },
+        {
+            title: 'Contrast',
+            href: '/services/contrast',
+        },
+    ],
+    links: [
+        {
+            title: 'Changelog',
+            icon: News01Icon,
+            href: '/change-log',
+        },
+        {
+            title: 'Support',
+            icon: CustomerService01Icon,
+            href: 'https://t.me/rauanthesaint',
+        },
+        {
+            title: 'Wiki',
+            icon: Book02Icon,
+            href: 'https://github.com/rauanthesaint/huemeleon/wiki',
+        },
+        {
+            icon: Github01Icon,
+            href: 'https://github.com/rauanthesaint/huemeleon',
+        },
+        {
+            icon: TelegramIcon,
+            href: 'https://t.me/huemeleon',
+        },
     ],
 }

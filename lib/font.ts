@@ -1,5 +1,5 @@
 import localFont from 'next/font/local'
-import { Inter as InterFont, Geist_Mono } from 'next/font/google'
+import { Inter as InterFont, Geist_Mono, Geist as Sans } from 'next/font/google'
 
 export const NeutralSans = localFont({
     src: [
@@ -32,5 +32,9 @@ export const Inter = InterFont({
 
 export const GeistMono = Geist_Mono({
     variable: '--font-geist-mono',
+    subsets: ['latin'],
+})
+export const Geist = Sans({
+    variable: '--font-sans',
     subsets: ['latin'],
 })

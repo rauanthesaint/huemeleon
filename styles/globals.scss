@@ -7,7 +7,7 @@ body {
     height: 100dvh;
     display: flex;
     flex-direction: column;
-    font-family: var(--font-inter);
+    font-family: var(--font-sans);
     color: var(--foreground);
     background: var(--background);
 }
@@ -15,8 +15,6 @@ body {
     padding-block: 4rem;
 }
 
-.tools-layout {
-    main {
-        padding-block: 2rem;
-    }
+[data-theme='dark'] .logo {
+    filter: invert(1);
 }

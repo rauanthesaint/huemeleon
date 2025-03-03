@@ -92,7 +92,11 @@ export default class Color {
     }
 
     toCssHSL(): string {
-        const hsl = this.toHSL()
-        return `hsl(${hsl.hue}, ${hsl.saturation}%, ${hsl.lightness}%)`
+        const { hue, saturation, lightness } = this.toHSL()
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`
+    }
+    toCssRGB(): string {
+        const { red, blue, green } = this.value
+        return `rgb(${red}, ${green}, ${blue})`
     }
 }
