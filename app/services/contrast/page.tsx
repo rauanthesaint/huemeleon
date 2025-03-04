@@ -9,6 +9,7 @@ import { getContrast } from '@/lib/color.utils'
 import { HEX } from '@/types'
 import { Controller, useForm } from 'react-hook-form'
 import Color from '@/lib/color.class'
+import clsx from 'clsx'
 
 export default function Page() {
     type Values = {
@@ -18,7 +19,7 @@ export default function Page() {
 
     const { control, watch } = useForm<Values>({
         mode: 'onChange',
-        defaultValues: { foreground: '#1D5391', background: '#ACC8E5' },
+        defaultValues: { foreground: '#D5D5B1', background: '#191411' },
     })
 
     const foreground: HEX = watch('foreground')
@@ -28,10 +29,22 @@ export default function Page() {
         Color.fromHEX(background)
     )
 
+    const interpreter = (contrast: number) => {
+        if (contrast < 3) {
+            return 'low'
+        } else if (contrast >= 3 && contrast < 7) {
+            return 'good'
+        } else {
+            return 'high'
+        }
+    }
+
+    const interpretation = interpreter(contrast).toUpperCase()
+
     return (
         <Container as={'main'}>
             <section className={styles.container}>
-                <section className={styles.form}>
+                <section className={styles.content}>
                     <div className={styles.controller}>
                         <Controller
                             name="foreground"
@@ -58,14 +71,32 @@ export default function Page() {
                             )}
                         />
                     </div>
-                    {/* <div className={styles.result}>{contrast}</div> */}
-                    <div className={styles.result}>{contrast}</div>
+                    <div className={styles.result}>
+                        <span
+                            className={clsx(
+                                'heading',
+                                styles[interpreter(contrast)]
+                            )}
+                        >
+                            {contrast}
+                        </span>
+                        <span className={'label sm'}>
+                            {interpretation} contrast
+                        </span>
+                    </div>
                 </section>
                 <section
-                    style={{ backgroundColor: background }}
-                    className={styles.content}
+                    style={{ backgroundColor: background, color: foreground }}
+                    className={styles.preview}
                 >
-                    <p style={{ color: foreground }}>Lorem, ipsum dolor.</p>
+                    <p className={styles.head}>
+                        <span className="heading">Lentamente</span>
+                        <span className="label sm">CARA ‧ 2020</span>
+                    </p>
+                    <p>
+                        Sola al centro della movida, Baci al gusto di medicina,
+                        Agrodolci come la Cina, Mi capisce soltanto Freeda
+                    </p>
                 </section>
             </section>
         </Container>

@@ -11,7 +11,6 @@ import { siteConfig } from '@/config/site'
 import { usePathname } from 'next/navigation'
 import clsx from 'clsx'
 import Theme from '../theme/theme'
-import { PlusSignIcon } from '@/public/icons'
 
 export default function Header() {
     const pathname = usePathname()
@@ -27,23 +26,6 @@ export default function Header() {
                         alt="Huemeleon Logo"
                     />
                     <section className={styles.content}>
-                        <div className={styles.block}>
-                            {siteConfig.navigation.map((link, index) => {
-                                const isActive = pathname.includes('services')
-                                return (
-                                    <Link
-                                        key={index}
-                                        className={clsx(
-                                            styles.item,
-                                            isActive && styles.active
-                                        )}
-                                        href={link.href}
-                                    >
-                                        {link.title}
-                                    </Link>
-                                )
-                            })}
-                        </div>
                         <div className={styles.block}>
                             {siteConfig.links.map((link, index) => {
                                 return (
@@ -79,10 +61,10 @@ export default function Header() {
                         )
                     })}
 
-                    <Link className={styles.item} href="/suggest">
+                    {/* <Link className={styles.item} href="/suggest">
                         <PlusSignIcon className={styles.sm} />
                         Suggest Tool
-                    </Link>
+                    </Link> */}
                 </section>
             </Container>
         </header>

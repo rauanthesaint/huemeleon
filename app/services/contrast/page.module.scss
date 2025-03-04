@@ -2,17 +2,35 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
     gap: 2rem;
-    .content {
-        display: grid;
-        place-content: center;
-        place-items: center;
+    .preview {
+        border-radius: calc(var(--min-value) * 2);
+        padding: 12px;
 
-        border-radius: 12px;
+        .head {
+            margin-bottom: 12px;
+        }
     }
-    .form {
+    .content {
         .controller {
             display: flex;
             gap: 8px;
+        }
+        .result {
+            background: var(--background-secondary);
+            border: 1px solid var(--border);
+            border-radius: calc(var(--min-value) * 2);
+            padding: 12px;
+            margin-top: 1rem;
+
+            .low {
+                color: hsl(var(--error));
+            }
+            .good {
+                color: var(--warning);
+            }
+            .high {
+                color: hsl(var(--success));
+            }
         }
     }
 }

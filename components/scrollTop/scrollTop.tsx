@@ -9,12 +9,11 @@ export default function ScrollTop() {
 
     useEffect(() => {
         const checkHeight = () => {
-            setVisible(document.documentElement.scrollHeight > 1500)
+            setVisible(document.documentElement.clientHeight > 1500)
         }
 
         checkHeight() // Check initially
         window.addEventListener('resize', checkHeight) // Recalculate on resize
-
         return () => window.removeEventListener('resize', checkHeight)
     }, [])
 

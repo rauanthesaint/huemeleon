@@ -12,7 +12,7 @@
 .inputContainer {
     height: 2.5rem;
 
-    padding-inline: 0.75rem 0;
+    padding-left: 0.75rem;
     background: var(--active-background);
     border-radius: calc(var(--min-value) * 1.5);
     border: 1px solid var(--border-secondary);
@@ -23,17 +23,18 @@
     align-items: center;
     // gap: 0.5rem;
 
-    svg {
+    & > svg {
         $size: 1.125rem;
         width: $size;
         height: $size;
+        margin-right: 0.75rem;
     }
 
     .input {
         width: 100%;
         height: 100%;
         font-size: 14px;
-        margin-inline: 0.75rem;
+        margin-right: 0.75rem;
     }
 
     .action {
