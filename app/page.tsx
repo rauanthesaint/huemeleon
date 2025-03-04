@@ -1,3 +1,8 @@
+'use client'
+import { useEffect } from 'react'
 export default function Page() {
-    return <main>Index</main>
+    useEffect(() => {
+        window.location.replace('/services/shader')
+    }, [])
+    return <main></main>
 }
