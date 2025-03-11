@@ -12,8 +12,8 @@ import Color from '@/lib/color.class'
 
 const CanvasColorPicker = ({
     color,
-    setColor,
-}: {
+}: // setColor,
+{
     color: Color
     setColor: (color: Color) => void
 }) => {
