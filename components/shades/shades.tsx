@@ -1,8 +1,13 @@
+'use client'
 import Color from '@/lib/color.class'
 import { generateShades, getContrast } from '@/lib/color.utils'
 import ScaleExport from '../scale-export/scale-export'
 
 import styles from './shades.module.scss'
+import Notification from '@/ui/notification/notification'
+import { useState } from 'react'
+
+import { motion } from 'framer-motion'
 
 export interface ShadesType {
     name: string
@@ -12,6 +17,18 @@ export interface ShadesType {
 const Shades = ({ name, base }: ShadesType) => {
     const shades = generateShades(base, 12)
     const KEYS = [50, 100, 150, 200, 300, 400, 500, 600, 700, 800, 900, 950]
+    const [isVisible, setMessageVisibility] = useState<boolean>(false)
+    const [message, setMessage] = useState<string | null>(null)
+
+    const handleClick = (color: Color) => {
+        navigator.clipboard
+            .writeText(color.toHEX())
+            .then(() => {
+                setMessageVisibility(true)
+                setMessage(`${color.toHEX()} is copied`)
+            })
+            .catch((err) => console.error('Failed to copy:', err))
+    }
 
     return (
         <section className={styles.palette}>
@@ -19,6 +36,11 @@ const Shades = ({ name, base }: ShadesType) => {
                 <span className="heading">{name}</span>
                 <ScaleExport name={name} data={base} />
             </header>
+            <Notification
+                show={isVisible}
+                onHide={setMessageVisibility}
+                message={message}
+            />
             <div className={styles.grid}>
                 {shades.map((elem, index) => {
                     const contrast = getContrast(elem, Color.fromHEX('#ffffff'))
@@ -27,17 +49,18 @@ const Shades = ({ name, base }: ShadesType) => {
                             ? shades[shades.length - 2].toHEX()
                             : shades[0].toHEX()
                     return (
-                        <article
-                            style={{
+                        <motion.article
+                            animate={{
                                 backgroundColor: elem.toHEX(),
                                 color: foreground,
                             }}
+                            onClick={() => handleClick(elem)}
                             key={index}
                             className={styles.gridItem}
                         >
                             <span>{KEYS[index]}</span>
                             <p className="label sm">{elem.toHEX()}</p>
-                        </article>
+                        </motion.article>
                     )
                 })}
             </div>

@@ -7,16 +7,19 @@ const Button: React.FC<ButtonProps> = ({
     isIcon,
     isFullWidth,
     className,
+    disabled,
     children,
     id,
     variant = 'primary',
     size = 'md',
     type = 'button',
     onClick,
+    as: Component = 'button',
+
     style,
 }) => {
     return (
-        <button
+        <Component
             id={id}
             style={style}
             className={clsx(
@@ -27,11 +30,12 @@ const Button: React.FC<ButtonProps> = ({
                 isFullWidth && styles.fullWidth,
                 className
             )}
+            disabled={disabled}
             type={type}
             onClick={onClick}
         >
             {children}
-        </button>
+        </Component>
     )
 }
 

@@ -4,19 +4,9 @@
     padding: 12px;
     border-radius: 8px;
     z-index: 100;
-}
-.component.info {
-    background: var(--background-secondary);
-}
-.component.left {
-    left: 1rem;
-}
-.component.right {
-    right: 1rem;
-}
-.component.top {
+    background: var(--solid);
+    color: var(--foreground-secondary);
     top: 1rem;
-}
-.component.bottom {
-    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
 }

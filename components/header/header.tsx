@@ -8,12 +8,49 @@ import Logo from '@/public/img/svg/logo.svg'
 import Image from 'next/image'
 
 import { siteConfig } from '@/config/site'
-import { usePathname } from 'next/navigation'
 import clsx from 'clsx'
 import Theme from '../theme/theme'
-
+import { Menu09Icon } from '@/public/icons'
+import { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 export default function Header() {
-    const pathname = usePathname()
+    const [mobileMenuActive, setMobileMenuActive] = useState<boolean>(false)
+    const handleMobileMenuToggle = () => {
+        setMobileMenuActive(!mobileMenuActive)
+    }
+
+    const Content = (
+        <>
+            <div className={styles.list}>
+                {siteConfig.navigation.map((elem, index) => {
+                    return (
+                        <Link
+                            key={index}
+                            className={clsx(styles.item)}
+                            href={elem.href}
+                        >
+                            {elem.title}
+                        </Link>
+                    )
+                })}
+            </div>
+            <div className={styles.block}>
+                {siteConfig.links.map((link, index) => {
+                    return (
+                        <Link
+                            key={index}
+                            href={link.href}
+                            target="_blank"
+                            className={styles.item}
+                        >
+                            <link.icon />
+                            {link.title}
+                        </Link>
+                    )
+                })}
+            </div>
+        </>
+    )
 
     return (
         <header className={styles.header}>
@@ -25,46 +62,32 @@ export default function Header() {
                         height={24}
                         alt="Huemeleon Logo"
                     />
-                    <section className={styles.content}>
-                        <div className={styles.block}>
-                            {siteConfig.links.map((link, index) => {
-                                return (
-                                    <Link
-                                        key={index}
-                                        href={link.href}
-                                        target="_blank"
-                                        className={styles.item}
-                                    >
-                                        <link.icon />
-                                        {link.title}
-                                    </Link>
-                                )
-                            })}
-                            <Theme className={styles.item} />
-                        </div>
-                    </section>
-                </section>
-                <section className={styles.services__section}>
-                    {siteConfig.services.map((service, index) => {
-                        const isActive = pathname === service.href
-                        return (
-                            <Link
-                                key={index}
-                                className={clsx(
-                                    styles.item,
-                                    isActive && styles.active
-                                )}
-                                href={service.href}
-                            >
-                                {service.title}
-                            </Link>
-                        )
-                    })}
 
-                    {/* <Link className={styles.item} href="/suggest">
-                        <PlusSignIcon className={styles.sm} />
-                        Suggest Tool
-                    </Link> */}
+                    <AnimatePresence>
+                        {mobileMenuActive && (
+                            <motion.section
+                                initial={{ left: '100%' }}
+                                animate={{
+                                    left: 0,
+                                }}
+                                exit={{ left: '100%' }}
+                                className={clsx(styles.mobileMenu, 'no-scroll')}
+                            >
+                                {Content}
+                            </motion.section>
+                        )}
+                    </AnimatePresence>
+                    <section className={styles.content}>{Content}</section>
+                    <div className={styles.block}>
+                        <Theme className={styles.item} />
+
+                        <div
+                            onClick={handleMobileMenuToggle}
+                            className={clsx(styles.mobile, styles.item)}
+                        >
+                            <Menu09Icon />
+                        </div>
+                    </div>
                 </section>
             </Container>
         </header>

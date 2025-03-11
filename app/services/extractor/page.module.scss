@@ -1,0 +1,39 @@
+.container {
+    border: 1px solid var(--border);
+    border-radius: calc(var(--min-value) * 2);
+    & > header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .block {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        padding: 12px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 20rem;
+        overflow: hidden;
+        .view {
+            width: 100%;
+            img {
+                width: 100%;
+                height: fit-content;
+            }
+
+            position: relative;
+            .color {
+                position: absolute;
+                width: 12px;
+                aspect-ratio: 1;
+            }
+        }
+    }
+}
