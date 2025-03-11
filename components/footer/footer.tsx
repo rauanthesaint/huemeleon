@@ -5,6 +5,7 @@ import styles from './footer.module.scss'
 import Logo from '@/public/img/svg/logo.svg'
 import { siteConfig } from '@/config/site'
 import Link from 'next/link'
+import { CommandIcon } from '@/public/icons'
 
 export default function Footer() {
     return (
@@ -27,6 +28,16 @@ export default function Footer() {
                                 )
                             })}
                         </ul>
+                    </div>
+                    <div className={styles.column}>
+                        <button
+                            type="button"
+                            title="Shortcuts"
+                            className={styles.item}
+                        >
+                            <CommandIcon />
+                            <span>Shortcuts</span>
+                        </button>
                     </div>
                 </section>
                 <section className={styles.bottom}>

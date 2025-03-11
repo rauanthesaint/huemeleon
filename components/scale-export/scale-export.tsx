@@ -6,7 +6,7 @@ import styles from './scale-export.module.scss'
 
 import { GeistMono } from '@/lib/font'
 import Notification from '@/ui/notification/notification'
-import { Copy01Icon } from '@/public/icons'
+import { Copy01Icon, Tick02Icon } from '@/public/icons'
 import Color from '@/lib/color.class'
 import { generateShades } from '@/lib/color.utils'
 
@@ -63,7 +63,13 @@ export default function ScaleExport({
                         size="sm"
                         onClick={handleCopy}
                     >
-                        <Copy01Icon />
+                        {copied ? (
+                            <Tick02Icon
+                                style={{ color: 'hsl(var(--success))' }}
+                            />
+                        ) : (
+                            <Copy01Icon />
+                        )}
                     </Button>
                 </header>
 

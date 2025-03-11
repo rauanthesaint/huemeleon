@@ -4,9 +4,8 @@ import { Container } from '@/components'
 import { Input } from '@/ui'
 
 import styles from './page.module.scss'
-import { HashtagIcon } from '@/public/icons'
+import { PaintBoardIcon } from '@/public/icons'
 import { getContrast } from '@/lib/color.utils'
-import { HEX } from '@/types'
 import { Controller, useForm } from 'react-hook-form'
 import Color from '@/lib/color.class'
 import clsx from 'clsx'
@@ -19,15 +18,12 @@ export default function Page() {
 
     const { control, watch } = useForm<Values>({
         mode: 'onChange',
-        defaultValues: { foreground: '#D5D5B1', background: '#191411' },
+        defaultValues: { foreground: 'D5D5B1', background: '191411' },
     })
 
-    const foreground: HEX = watch('foreground')
-    const background: HEX = watch('background')
-    const contrast = getContrast(
-        Color.fromHEX(foreground),
-        Color.fromHEX(background)
-    )
+    const foreground: Color = Color.fromHEX(watch('foreground'))
+    const background: Color = Color.fromHEX(watch('background'))
+    const contrast = getContrast(foreground, background)
 
     const interpreter = (contrast: number) => {
         if (contrast < 3) {
@@ -51,7 +47,7 @@ export default function Page() {
                             control={control}
                             render={({ field }) => (
                                 <Input
-                                    icon={<HashtagIcon />}
+                                    icon={<PaintBoardIcon />}
                                     placeholder="000000"
                                     label="Text color"
                                     {...field}
@@ -63,7 +59,7 @@ export default function Page() {
                             control={control}
                             render={({ field }) => (
                                 <Input
-                                    icon={<HashtagIcon />}
+                                    icon={<PaintBoardIcon />}
                                     placeholder="000000"
                                     label="Background color"
                                     {...field}
@@ -86,7 +82,10 @@ export default function Page() {
                     </div>
                 </section>
                 <section
-                    style={{ backgroundColor: background, color: foreground }}
+                    style={{
+                        backgroundColor: background.toHEX(),
+                        color: foreground.toHEX(),
+                    }}
                     className={styles.preview}
                 >
                     <p className={styles.head}>

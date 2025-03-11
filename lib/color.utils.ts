@@ -60,5 +60,6 @@ export const getContrast = (color1: Color, color2: Color): number => {
     const lum2 = getLuminance(color2)
     const contrast =
         (Math.max(lum1, lum2) + 0.05) / (Math.min(lum1, lum2) + 0.05)
+
     return Math.round(contrast * 100) / 100 // Возвращаем корректный коэффициент контраста
 }

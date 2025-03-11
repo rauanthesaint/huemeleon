@@ -1,5 +1,6 @@
 export { default as Container } from './container/container'
-export { default as ColorScale } from './color-scale/color-scale'
+
+export { default as Navigation } from './navigation/navigation'
 
 //
 export { default as Header } from './header/header'

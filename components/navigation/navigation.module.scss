@@ -1,0 +1,55 @@
+$item-padding: 8px;
+
+.services__section {
+    background: var(--background-secondary);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    .container {
+        display: flex;
+        overflow-x: scroll;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        position: relative;
+        z-index: 1;
+        .item {
+            padding: $item-padding * 1.5 $item-padding;
+            &.active {
+                color: var(--foreground);
+            }
+            font-size: 14px;
+            color: var(--foreground-tertiary);
+            &:hover {
+                color: var(--foreground);
+            }
+            transition: color 100ms linear;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            svg {
+                $size: 16px;
+                width: $size;
+                height: $size;
+            }
+        }
+    }
+}
+
+.indicator {
+    height: 1px;
+    background: var(--foreground);
+    position: absolute;
+    bottom: 0;
+}
+.curtain {
+    position: absolute;
+    inset: $item-padding auto;
+    border-radius: var(--min-value);
+    z-index: -1;
+    background: var(--active-background);
+}

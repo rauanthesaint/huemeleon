@@ -17,17 +17,14 @@ interface NotificationProps {
 }
 
 const NotificationVariants: Variants = {
-    active: { opacity: 1, y: 0 },
-    inactive: { opacity: 0, y: 20 },
+    active: { opacity: 1, top: 16 },
+    inactive: { opacity: 0, top: -20 },
 }
 
 const Notification: React.FC<NotificationProps> = ({
     message,
     show,
     onHide,
-    type = 'info',
-    align = 'right',
-    place = 'bottom',
 }) => {
     useEffect(() => {
         if (show) {
@@ -43,12 +40,7 @@ const Notification: React.FC<NotificationProps> = ({
                     initial="inactive"
                     animate="active"
                     exit="inactive"
-                    className={clsx(
-                        styles.component,
-                        styles[type],
-                        styles[align],
-                        styles[place]
-                    )}
+                    className={clsx(styles.component)}
                 >
                     {message}
                 </motion.div>

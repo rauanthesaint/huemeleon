@@ -1,4 +1,4 @@
-import { CSSProperties } from 'react'
+import { CSSProperties, ElementType } from 'react'
 import { GeneralProps, WithChildrenProps } from '../lib/types'
 
 export interface ButtonProps extends GeneralProps, WithChildrenProps {
@@ -7,11 +7,12 @@ export interface ButtonProps extends GeneralProps, WithChildrenProps {
     variant?: 'primary' | 'secondary' | 'tertiary'
 
     // Booleans
+    disabled?: boolean
     isIcon?: boolean
     isFullWidth?: boolean
 
     style?: CSSProperties
-
+    as?: ElementType
     // Event Handlers
     onClick?: () => void
 }
