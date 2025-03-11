@@ -11,40 +11,46 @@ import { siteConfig } from '@/config/site'
 import clsx from 'clsx'
 import Theme from '../theme/theme'
 import { Menu09Icon } from '@/public/icons'
-import { useCallback, useEffect, useState } from 'react'
+import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 export default function Header() {
-    const [active, setActive] = useState<boolean>(false)
-    const handle = () => {
-        setActive(!active)
+    const [mobileMenuActive, setMobileMenuActive] = useState<boolean>(false)
+    const handleMobileMenuToggle = () => {
+        setMobileMenuActive(!mobileMenuActive)
     }
 
-    useEffect(() => {
-        if (active && window.innerWidth <= 768) {
-            document.documentElement.style.overflow = 'hidden'
-        } else {
-            document.documentElement.style.overflow = ''
-        }
-
-        return () => {
-            document.documentElement.style.overflow = ''
-        }
-    }, [active])
-
-    const handleResize = useCallback(() => {
-        setActive(window.innerWidth > 768)
-    }, [])
-
-    useEffect(() => {
-        // Run once on mount
-        handleResize()
-
-        // Add event listener
-        window.addEventListener('resize', handleResize)
-
-        // Cleanup listener on unmount
-        return () => window.removeEventListener('resize', handleResize)
-    }, [handleResize])
+    const Content = (
+        <>
+            <div className={styles.list}>
+                {siteConfig.navigation.map((elem, index) => {
+                    return (
+                        <Link
+                            key={index}
+                            className={clsx(styles.item)}
+                            href={elem.href}
+                        >
+                            {elem.title}
+                        </Link>
+                    )
+                })}
+            </div>
+            <div className={styles.block}>
+                {siteConfig.links.map((link, index) => {
+                    return (
+                        <Link
+                            key={index}
+                            href={link.href}
+                            target="_blank"
+                            className={styles.item}
+                        >
+                            <link.icon />
+                            {link.title}
+                        </Link>
+                    )
+                })}
+            </div>
+        </>
+    )
 
     return (
         <header className={styles.header}>
@@ -58,55 +64,25 @@ export default function Header() {
                     />
 
                     <AnimatePresence>
-                        {active && (
+                        {mobileMenuActive && (
                             <motion.section
                                 initial={{ left: '100%' }}
                                 animate={{
                                     left: 0,
                                 }}
                                 exit={{ left: '100%' }}
-                                className={clsx(styles.content)}
+                                className={clsx(styles.mobileMenu, 'no-scroll')}
                             >
-                                <div className={styles.list}>
-                                    {siteConfig.navigation.map(
-                                        (elem, index) => {
-                                            return (
-                                                <Link
-                                                    key={index}
-                                                    className={clsx(
-                                                        styles.item
-                                                    )}
-                                                    href={elem.href}
-                                                >
-                                                    {elem.title}
-                                                </Link>
-                                            )
-                                        }
-                                    )}
-                                </div>
-                                <div className={styles.block}>
-                                    {siteConfig.links.map((link, index) => {
-                                        return (
-                                            <Link
-                                                key={index}
-                                                href={link.href}
-                                                target="_blank"
-                                                className={styles.item}
-                                            >
-                                                <link.icon />
-                                                {link.title}
-                                            </Link>
-                                        )
-                                    })}
-                                </div>
+                                {Content}
                             </motion.section>
                         )}
                     </AnimatePresence>
+                    <section className={styles.content}>{Content}</section>
                     <div className={styles.block}>
                         <Theme className={styles.item} />
 
                         <div
-                            onClick={handle}
+                            onClick={handleMobileMenuToggle}
                             className={clsx(styles.mobile, styles.item)}
                         >
                             <Menu09Icon />

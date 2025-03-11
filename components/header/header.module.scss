@@ -5,17 +5,16 @@
     .item {
         font-size: 14px;
         color: var(--foreground-tertiary);
+        display: flex;
+        align-items: center;
+
         &:hover {
             color: var(--foreground);
         }
 
-        display: flex;
-        align-items: center;
-
         svg {
-            $size: 20px;
-            width: $size;
-            height: $size;
+            width: 20px;
+            height: 20px;
         }
     }
 
@@ -26,37 +25,51 @@
         justify-content: space-between;
 
         .content {
+            display: none;
+            align-items: center;
+            width: 100%;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .mobileMenu {
             position: fixed;
             inset: 3rem 0 0 auto;
-            z-index: 100;
-            overflow: hidden;
+            z-index: 200;
             border-top: 1px solid var(--border);
-
-            display: flex;
-            gap: 2rem;
-            padding: 1rem 2.5%;
-            flex-direction: column;
-
             background: var(--background-secondary);
+            padding: 2rem 2.5%;
+
+            .item {
+                font-size: 1.5rem;
+            }
+
+            .list {
+                flex-direction: column;
+                margin-bottom: 2rem;
+            }
         }
+
         .block {
             display: flex;
+
             .item {
                 justify-content: center;
                 width: 36px;
             }
         }
+
         .list {
             display: flex;
-            flex-direction: column;
             gap: 8px;
+
             .item {
                 &.active {
                     color: var(--foreground);
                 }
-                font-size: 1.5rem;
             }
         }
+
         .logo {
             flex-shrink: 0;
             margin-right: 1rem;
@@ -68,22 +81,11 @@
     .header {
         .section {
             .content {
-                position: static;
-                width: 100%;
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-                padding: unset;
-                border-top: unset;
-            }
-
-            .list {
-                flex-direction: row;
-                .item {
-                    font-size: 14px;
-                }
+                display: flex;
             }
         }
+
+        .mobileMenu,
         .mobile {
             display: none;
         }

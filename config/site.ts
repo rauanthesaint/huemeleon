@@ -25,10 +25,10 @@ export const siteConfig: {
 } = {
     title: 'Huemeleon',
     navigation: [
-        {
-            title: 'Home',
-            href: '/',
-        },
+        // {
+        //     title: 'Home',
+        //     href: '/',
+        // },
         {
             title: 'Services',
             href: '/services/shader',
@@ -39,18 +39,18 @@ export const siteConfig: {
             title: 'Shader',
             href: '/services/shader',
         },
-        {
-            title: 'Picker',
-            href: '/services/picker',
-        },
-        {
-            title: 'Mixer',
-            href: '/services/mixer',
-        },
-        {
-            title: 'Extractor',
-            href: '/services/extractor',
-        },
+        // {
+        //     title: 'Picker',
+        //     href: '/services/picker',
+        // },
+        // {
+        //     title: 'Mixer',
+        //     href: '/services/mixer',
+        // },
+        // {
+        //     title: 'Extractor',
+        //     href: '/services/extractor',
+        // },
         {
             title: 'Contrast',
             href: '/services/contrast',
