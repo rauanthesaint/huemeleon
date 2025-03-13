@@ -41,10 +41,10 @@ export const siteConfig: {
         //     title: 'Picker',
         //     href: '/services/picker',
         // },
-        // {
-        //     title: 'Mixer',
-        //     href: '/services/mixer',
-        // },
+        {
+            title: 'Mixer',
+            href: '/services/mixer',
+        },
         {
             title: 'Extractor',
             href: '/services/extractor',

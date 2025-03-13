@@ -18,6 +18,7 @@ const Input: React.FC<InputProps> = ({
     ref,
     value,
     action,
+    readOnly,
 
     onChange,
 }) => {
@@ -43,6 +44,7 @@ const Input: React.FC<InputProps> = ({
                     value={value}
                     className={clsx(styles.input, className)}
                     onChange={onChange}
+                    readOnly={readOnly}
                 />
                 {actionComponent}
             </div>

@@ -37,6 +37,17 @@ export function getRandomHexColor(): Color {
     )
 }
 
+export function mixColor(color_1: Color, color_2: Color): Color {
+    const { red: r1, green: g1, blue: b1 } = color_1.toRGB()
+    const { red: r2, green: g2, blue: b2 } = color_2.toRGB()
+
+    const mixedR = Math.round((r1 + r2) / 2)
+    const mixedG = Math.round((g1 + g2) / 2)
+    const mixedB = Math.round((b1 + b2) / 2)
+
+    return new Color({ red: mixedR, green: mixedG, blue: mixedB })
+}
+
 export const getLuminance = (color: Color): number => {
     let { red, green, blue } = color.toRGB()
     red /= 255
