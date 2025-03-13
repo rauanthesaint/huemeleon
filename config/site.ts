@@ -1,8 +1,6 @@
 import {
-    // Book02Icon,
     CustomerService01Icon,
     Github01Icon,
-    // News01Icon,
     TelegramIcon,
 } from '@/public/icons'
 
@@ -47,10 +45,10 @@ export const siteConfig: {
         //     title: 'Mixer',
         //     href: '/services/mixer',
         // },
-        // {
-        //     title: 'Extractor',
-        //     href: '/services/extractor',
-        // },
+        {
+            title: 'Extractor',
+            href: '/services/extractor',
+        },
         {
             title: 'Contrast',
             href: '/services/contrast',
@@ -61,20 +59,10 @@ export const siteConfig: {
         },
     ],
     links: [
-        // {
-        //     title: 'Changelog',
-        //     icon: News01Icon,
-        //     href: '/change-log',
-        // },
         {
             icon: CustomerService01Icon,
             href: 'https://t.me/rauanthesaint',
         },
-        // {
-        //     title: 'Wiki',
-        //     icon: Book02Icon,
-        //     href: 'https://github.com/rauanthesaint/huemeleon/wiki',
-        // },
         {
             icon: Github01Icon,
             href: 'https://github.com/rauanthesaint/huemeleon',
