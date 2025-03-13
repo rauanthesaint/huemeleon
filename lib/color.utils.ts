@@ -63,3 +63,102 @@ export const getContrast = (color1: Color, color2: Color): number => {
 
     return Math.round(contrast * 100) / 100 // Возвращаем корректный коэффициент контраста
 }
+
+export function getCommonColors(
+    imageSrc: string
+): Promise<{ color: string; position: { x: number; y: number } }[]> {
+    return new Promise((resolve, reject) => {
+        const img = new Image()
+        img.crossOrigin = 'Anonymous' // Enable CORS if the image is from another domain
+
+        img.onload = () => {
+            // Create canvas to draw and analyze the image
+            const canvas = document.createElement('canvas')
+            const ctx = canvas.getContext('2d')
+            if (!ctx) {
+                reject(new Error('Could not get canvas context'))
+                return
+            }
+
+            // Set canvas dimensions to match image
+            canvas.width = img.width
+            canvas.height = img.height
+
+            // Draw image to canvas
+            ctx.drawImage(img, 0, 0)
+
+            // Get pixel data from canvas
+            const imageData = ctx.getImageData(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            )
+            const pixels = imageData.data
+
+            // Map to store color frequencies and their first occurrence position
+            const colorMap: Map<
+                string,
+                { count: number; position: { x: number; y: number } }
+            > = new Map()
+
+            // Process each pixel (RGBA values come in groups of 4)
+            for (let i = 0; i < pixels.length; i += 4) {
+                const r = pixels[i]
+                const g = pixels[i + 1]
+                const b = pixels[i + 2]
+                // Convert RGB to HEX
+                const hex = rgbToHex(r, g, b)
+
+                // Calculate x and y coordinates of the pixel
+                const pixelIndex = i / 4
+                const x = pixelIndex % canvas.width
+                const y = Math.floor(pixelIndex / canvas.width)
+
+                // If color already exists in map, increment its count
+                // Otherwise, add new entry with count 1 and store position
+                if (colorMap.has(hex)) {
+                    const data = colorMap.get(hex)!
+                    colorMap.set(hex, {
+                        count: data.count + 1,
+                        position: data.position, // Keep the first occurrence position
+                    })
+                } else {
+                    colorMap.set(hex, {
+                        count: 1,
+                        position: { x, y },
+                    })
+                }
+            }
+
+            // Convert map to array and sort by frequency (count)
+            const sortedColors = Array.from(colorMap.entries())
+                .sort((a, b) => b[1].count - a[1].count)
+                .slice(0, 10) // Get top 10
+                .map(([color, data]) => ({
+                    color,
+                    position: data.position,
+                }))
+
+            resolve(sortedColors)
+        }
+
+        img.onerror = () => {
+            reject(new Error('Failed to load image'))
+        }
+
+        // Set the source of the image
+        img.src = imageSrc
+    })
+}
+function rgbToHex(r: number, g: number, b: number): string {
+    return (
+        '#' +
+        [r, g, b]
+            .map((x) => {
+                const hex = x.toString(16)
+                return hex.length === 1 ? '0' + hex : hex
+            })
+            .join('')
+    )
+}
