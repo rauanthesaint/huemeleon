@@ -12,6 +12,7 @@ export interface InputProps
     defaultValue?: string | number
     hint?: React.ReactNode | string
     label?: React.ReactNode | string
+    readonly?: boolean
 
     icon?: React.ReactNode
 
