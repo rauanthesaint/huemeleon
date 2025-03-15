@@ -1,8 +1,7 @@
 'use client'
 import Color from '@/lib/color.class'
 import { generateShades, getContrast } from '@/lib/color.utils'
-import ScaleExport from '../scale-export/scale-export'
-
+import { Export } from '@/components'
 import styles from './shades.module.scss'
 import Notification from '@/ui/notification/notification'
 import { useState } from 'react'
@@ -34,7 +33,7 @@ const Shades = ({ name, base }: ShadesType) => {
         <section className={styles.palette}>
             <header className={styles.palette__header}>
                 <span className="heading">{name}</span>
-                <ScaleExport name={name} data={base} />
+                <Export name={name} shades={shades} />
             </header>
             <Notification
                 show={isVisible}

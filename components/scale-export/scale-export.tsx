@@ -19,10 +19,10 @@ export default function ScaleExport({
 }) {
     const shades = generateShades(data, 12)
     const [isOpen, setIsOpen] = useState<boolean>(false)
+    const handleClose = () => setIsOpen(!isOpen)
     const contentRef = useRef<HTMLUListElement>(null)
     const [copied, setIsCopied] = useState<boolean>(false)
 
-    const handleClose = () => setIsOpen(!isOpen)
     const KEYS = [50, 100, 150, 200, 300, 400, 500, 600, 700, 800, 900, 950]
 
     const handleCopy = () => {
