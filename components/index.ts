@@ -10,3 +10,5 @@ export { default as Footer } from './footer/footer'
 export { default as Shades } from './shades/shades'
 export { default as ScrollTop } from './scrollTop/scrollTop'
 export { default as Overlay } from './overlay/overlay'
+
+export { default as Export } from './export/export'

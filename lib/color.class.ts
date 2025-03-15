@@ -116,7 +116,11 @@ export default class Color {
         let H = Math.atan2(b_, a) * (180 / Math.PI)
         if (H < 0) H += 360
 
-        return { lightness: L, chroma: C, hue: H }
+        return {
+            lightness: Math.round(L),
+            chroma: Math.round(C),
+            hue: Math.round(H),
+        }
     }
 
     toFormattedHSL(): string {

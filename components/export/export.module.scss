@@ -1,0 +1,90 @@
+$padding: 12px;
+
+.container {
+    width: min(95%, 720px);
+    border: 1px solid var(--border);
+    border-radius: $padding;
+    overflow: hidden;
+
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: $padding;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+
+        @media screen and (min-width: 768px) {
+            flex-direction: row;
+            .environments {
+                width: 10rem;
+            }
+        }
+    }
+
+    .result {
+        width: 100%;
+        background: red;
+        background: var(--background);
+        padding: $padding;
+
+        min-height: 10rem;
+
+        .variable__value {
+            color: #b28878;
+        }
+        .variable__name {
+            color: #4fb9fe;
+        }
+        .comment {
+            color: #4ba63f;
+        }
+        position: relative;
+        .preview {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .copyButton {
+            position: absolute;
+            right: $padding;
+            top: $padding;
+        }
+    }
+}
+
+.list {
+    display: flex;
+    flex-shrink: 0;
+
+    flex-direction: row;
+    gap: 12px;
+    padding: 8px $padding;
+    border-right: unset;
+    border-bottom: 1px solid var(--border);
+
+    .item {
+        height: 2rem;
+        display: inline-flex;
+        align-items: center;
+        color: var(--foreground-tertiary);
+
+        &.active {
+            color: var(--foreground);
+        }
+    }
+
+    @media screen and (min-width: 768px) {
+        flex-direction: column;
+        border-right: 1px solid var(--border);
+        border-bottom: unset;
+
+        padding: $padding;
+        gap: unset;
+    }
+}
