@@ -1,0 +1,16 @@
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    gap: 8px;
+
+    .item {
+        background-color: var(--background-secondary);
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+}

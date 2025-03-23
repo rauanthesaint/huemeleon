@@ -8,6 +8,7 @@ import styles from './page.module.scss'
 import { Button } from '@/ui'
 import { ImageUploadIcon } from '@/public/icons'
 import Notification from '@/ui/notification/notification'
+import { useStore } from '@/app/hooks/useStore'
 
 type FormValues = {
     file: FileList | null
@@ -205,10 +206,14 @@ export default function Page() {
     const fileList = watch('file')
     const imageRef = useRef<HTMLImageElement>(null)
 
-    const [preview, setPreview] = useState<string | null>(null)
+    const { state, dispatch } = useStore()
+
+    const [preview, setPreview] = useState<string | null>(state.extractor.image)
     const [filename, setFilename] = useState<string | null>(null)
     const [extension, setExtension] = useState<string | null>(null)
-    const [commonColors, setCommonColors] = useState<ColorResult[]>([])
+    const [commonColors, setCommonColors] = useState<ColorResult[]>(
+        state.extractor.colors
+    )
     const [isProcessing, setIsProcessing] = useState(false)
     const [imageDimensions, setImageDimensions] = useState({
         width: 0,
@@ -218,6 +223,13 @@ export default function Page() {
         width: 0,
         height: 0,
     })
+
+    useEffect(() => {
+        dispatch({
+            type: 'UPDATE_EXTRACTOR',
+            payload: { image: preview, colors: commonColors },
+        })
+    }, [dispatch, preview, commonColors])
 
     const [copied, setCopied] = useState<boolean>(false)
 

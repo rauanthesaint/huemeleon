@@ -1,4 +1,4 @@
-export type HSV = { hue: number; saturation: number; value: number }
+export type HSB = { hue: number; saturation: number; brightness: number }
 export type CMYK = {
     cyan: number
     magenta: number

@@ -1,0 +1,13 @@
+.curtain {
+    position: fixed;
+    inset: 0;
+    z-index: var(--lvl-4);
+}
+
+.content {
+    position: absolute;
+    top: 100%;
+    margin-top: 8px;
+    right: 0;
+    z-index: var(--lvl-5);
+}

@@ -1,6 +1,16 @@
-import { HEX, HSL, LCH, RGB } from '@/types'
+import { HEX, HSL, LCH, RGB, HSB } from '@/types'
 
 export default class Color {
+    equals(newColor: Color) {
+        const currentRGB = this.toRGB()
+        const newRGB = newColor.toRGB()
+        return (
+            currentRGB.red === newRGB.red &&
+            currentRGB.green === newRGB.green &&
+            currentRGB.blue === newRGB.blue
+        )
+    }
+
     private value: RGB
 
     constructor(value: RGB) {
@@ -34,6 +44,56 @@ export default class Color {
         })
     }
 
+    // HSB => RGB
+    static fromHSB(hsb: HSB) {
+        let { saturation, brightness } = hsb
+        const hue = hsb.hue
+
+        saturation /= 100
+        brightness /= 100
+
+        const c = brightness * saturation // chroma
+        const x = c * (1 - Math.abs(((hue / 60) % 2) - 1))
+        const m = brightness - c
+
+        let r = 0,
+            g = 0,
+            b = 0
+
+        if (hue >= 0 && hue < 60) {
+            r = c
+            g = x
+            b = 0
+        } else if (hue >= 60 && hue < 120) {
+            r = x
+            g = c
+            b = 0
+        } else if (hue >= 120 && hue < 180) {
+            r = 0
+            g = c
+            b = x
+        } else if (hue >= 180 && hue < 240) {
+            r = 0
+            g = x
+            b = c
+        } else if (hue >= 240 && hue < 300) {
+            r = x
+            g = 0
+            b = c
+        } else if (hue >= 300 && hue < 360) {
+            r = c
+            g = 0
+            b = x
+        }
+
+        // Convert to 0-255 range
+        return new Color({
+            red: Math.round((r + m) * 255),
+            green: Math.round((g + m) * 255),
+            blue: Math.round((b + m) * 255),
+        })
+    }
+
     private normalizeRGB() {
         const { red, green, blue } = this.value
         return { red: red / 255, green: green / 255, blue: blue / 255 }
@@ -52,6 +112,44 @@ export default class Color {
             )
             .join('')}`.toUpperCase()
     }
+    toHSB(): HSB {
+        const { red, green, blue } = this.normalizeRGB()
+
+        const max = Math.max(red, green, blue)
+        const min = Math.min(red, green, blue)
+        const delta = max - min
+
+        let hue = 0
+        let saturation = 0
+        const brightness = max
+
+        // Calculate Hue
+        if (delta !== 0) {
+            switch (max) {
+                case red:
+                    hue = ((green - blue) / delta + (green < blue ? 6 : 0)) * 60
+                    break
+                case green:
+                    hue = ((blue - red) / delta + 2) * 60
+                    break
+                case blue:
+                    hue = ((red - green) / delta + 4) * 60
+                    break
+            }
+        }
+
+        // Calculate Saturation
+        if (max !== 0) {
+            saturation = delta / max
+        }
+
+        return {
+            hue: Math.round(hue),
+            saturation: Math.round(saturation * 100),
+            brightness: Math.round(brightness * 100),
+        }
+    }
+
     // RGB => HSL
     toHSL(): HSL {
         const { red, green, blue } = this.normalizeRGB()
@@ -121,26 +219,5 @@ export default class Color {
             chroma: Math.round(C),
             hue: Math.round(H),
         }
-    }
-
-    toFormattedHSL(): string {
-        const hsl = this.toHSL()
-        return `${hsl.hue}°, ${hsl.saturation}%, ${hsl.lightness}%`
-    }
-
-    toCssLCH(): string {
-        const { lightness, chroma, hue } = this.toLCH()
-        return `lch(${lightness.toFixed(2)}% ${chroma.toFixed(2)} ${hue.toFixed(
-            2
-        )}deg)`
-    }
-
-    toCssHSL(): string {
-        const { hue, saturation, lightness } = this.toHSL()
-        return `hsl(${hue}, ${saturation}%, ${lightness}%)`
-    }
-    toCssRGB(): string {
-        const { red, blue, green } = this.value
-        return `rgb(${red}, ${green}, ${blue})`
     }
 }

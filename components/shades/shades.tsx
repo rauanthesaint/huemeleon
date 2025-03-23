@@ -1,5 +1,5 @@
 'use client'
-import Color from '@/lib/color.class'
+import Color from '@/lib/color/color.class'
 import { generateShades, getContrast } from '@/lib/color.utils'
 import { Export } from '@/components'
 import styles from './shades.module.scss'
@@ -42,23 +42,21 @@ const Shades = ({ name, base }: ShadesType) => {
             />
             <div className={styles.grid}>
                 {shades.map((elem, index) => {
-                    const contrast = getContrast(elem, Color.fromHEX('#ffffff'))
+                    const contrast = getContrast(elem, Color.fromHEX('ffffff'))
                     const foreground =
-                        contrast < 3
-                            ? shades[shades.length - 2].toHEX()
-                            : shades[0].toHEX()
+                        contrast < 3 ? shades[shades.length - 2] : shades[0]
                     return (
                         <motion.article
                             animate={{
-                                backgroundColor: elem.toHEX(),
-                                color: foreground,
+                                backgroundColor: elem.toString('HEX'),
+                                color: foreground.toString('HEX'),
                             }}
                             onClick={() => handleClick(elem)}
                             key={index}
                             className={styles.gridItem}
                         >
                             <span>{KEYS[index]}</span>
-                            <p className="label sm">{elem.toHEX()}</p>
+                            <p className="label sm">{elem.toString('HEX')}</p>
                         </motion.article>
                     )
                 })}

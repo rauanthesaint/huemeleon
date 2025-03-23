@@ -1,121 +1,173 @@
 'use client'
 
+import Color from '@/lib/color/color.class'
 import styles from './picker.module.scss'
-import {
-    useState,
-    useRef,
-    useEffect,
-    useCallback,
-    useLayoutEffect,
-} from 'react'
-import Color from '@/lib/color.class'
+import { useMemo, useRef, useCallback, useState } from 'react'
+import { Button, Dropdown } from '@/ui'
+import { motion } from 'framer-motion'
+import clsx from 'clsx'
+import { ColorPickerIcon } from '@/public/icons'
 
-const CanvasColorPicker = ({
-    color,
-}: // setColor,
-{
-    color: Color
+type PickerProps = {
     setColor: (color: Color) => void
-}) => {
-    const canvasRef = useRef<HTMLCanvasElement>(null)
-    const hueCanvasRef = useRef<HTMLCanvasElement>(null)
-    const [canvasSize, setCanvasSize] = useState({ width: 256, height: 128 })
+    color: Color
+}
 
-    // Draw the color gradient
-    const drawCanvas = useCallback(() => {
-        const canvas = canvasRef.current
-        if (!canvas) return
-        const ctx = canvas.getContext('2d')
-        if (!ctx) return
+const sliderBackground = () => {
+    const step = 5
+    const colors = Array.from({ length: 360 / step + 1 }, (_, i) => {
+        return Color.fromHSL({
+            hue: i * step,
+            saturation: 100,
+            lightness: 50,
+        }).toString('HEX')
+    })
+    return `linear-gradient(90deg, ${colors.join(',')})`
+}
 
-        const { width, height } = canvasSize
-        const hueColor = color.toHEX()
+const Picker: React.FC<PickerProps> = ({ setColor, color }) => {
+    const [show, setShow] = useState<boolean>(false)
 
-        // Draw horizontal gradient (white → hue color)
-        const horizontalGradient = ctx.createLinearGradient(0, 0, width, 0)
-        horizontalGradient.addColorStop(0, '#ffffff')
-        horizontalGradient.addColorStop(1, hueColor)
+    const hueSliderRef = useRef<HTMLDivElement>(null)
+    const canvasRef = useRef<HTMLDivElement>(null)
 
-        ctx.fillStyle = horizontalGradient
-        ctx.fillRect(0, 0, width, height)
+    const { hue, saturation, brightness } = color.toHSB()
 
-        // Draw vertical gradient (transparent → black)
-        const verticalGradient = ctx.createLinearGradient(0, 0, 0, height)
-        verticalGradient.addColorStop(0, 'transparent')
-        verticalGradient.addColorStop(1, 'rgba(0,0,0,1)')
+    // === Saturation-Brightness Canvas Gradient ===
+    const canvasBackground = useMemo(() => {
+        return `linear-gradient(transparent, black), linear-gradient(90deg, white, hsl(${hue}, 100%, 50%))`
+    }, [hue])
 
-        ctx.fillStyle = verticalGradient
-        ctx.fillRect(0, 0, width, height)
+    // === Indicator Position for Hue ===
+    const huePercentage = useMemo(() => (hue / 360) * 100, [hue])
 
-        // Draw selection circle
-        const hsl = color.toHSL()
-        const x = (hsl.saturation / 100) * width
-        const y = (1 - hsl.lightness / 100) * height
-        ctx.strokeStyle = 'white'
-        ctx.lineWidth = 2
-        ctx.beginPath()
-        ctx.arc(x, y, 6, 0, 2 * Math.PI)
-        ctx.stroke()
-    }, [color, canvasSize])
+    // === Indicator Position for Canvas (Saturation & Brightness) ===
+    const canvasIndicatorStyle = useMemo(
+        () => ({
+            left: `${saturation}%`,
+            top: `${100 - brightness}%`,
+        }),
+        [saturation, brightness]
+    )
 
-    // Draw the hue gradient slider
-    const drawHueSlider = useCallback(() => {
-        const canvas = hueCanvasRef.current
-        if (!canvas) return
-        const ctx = canvas.getContext('2d')
-        if (!ctx) return
+    const handleClose = () => {
+        setShow((prev) => !prev)
+    }
 
-        const { width, height } = canvas
-        const gradient = ctx.createLinearGradient(0, 0, width, 0)
-
-        for (let i = 0; i <= 360; i += 10) {
-            const hueColor = Color.fromHSL({
-                hue: i,
-                saturation: 100,
-                lightness: 50,
-            }).toHEX()
-            gradient.addColorStop(i / 360, hueColor)
-        }
-
-        ctx.fillStyle = gradient
-        ctx.fillRect(0, 0, width, height)
-
-        // Draw selector
-        const hsl = color.toHSL()
-        const x = (hsl.hue / 360) * width
-        ctx.fillStyle = 'white'
-        ctx.fillRect(x - 2, 0, 4, height)
-    }, [color])
-
-    useLayoutEffect(() => {
-        const container = document.querySelector(`.${styles.container}`)
-        if (container) {
-            const containerWidth = container.clientWidth - 8
-            setCanvasSize({
-                height: (containerWidth * 2) / 3,
-                width: containerWidth,
+    // === Update Hue from Slider Position ===
+    const updateHueFromPosition = useCallback(
+        (clientX: number) => {
+            if (!hueSliderRef.current) return
+            const rect = hueSliderRef.current.getBoundingClientRect()
+            const newPercentage = Math.max(
+                0,
+                Math.min(1, (clientX - rect.left) / rect.width)
+            )
+            const newHue = Math.floor(newPercentage * 360)
+            const newColor = Color.fromHSB({
+                hue: newHue === 360 ? 359 : newHue,
+                saturation,
+                brightness,
             })
-        }
-    }, [])
-    // Update canvas when color changes
-    useEffect(() => {
-        drawCanvas()
-    }, [drawCanvas])
+            if (!color.equals(newColor)) {
+                setColor(newColor)
+            }
+        },
+        [saturation, brightness, color, setColor]
+    )
 
-    useEffect(() => {
-        drawHueSlider()
-    }, [drawHueSlider])
+    // === Update Saturation & Brightness from Canvas Position ===
+    const updateCanvasPosition = useCallback(
+        (clientX: number, clientY: number) => {
+            if (!canvasRef.current) return
+            const rect = canvasRef.current.getBoundingClientRect()
+            const sat =
+                Math.max(0, Math.min(1, (clientX - rect.left) / rect.width)) *
+                100
+            const bright =
+                Math.max(0, Math.min(1, (clientY - rect.top) / rect.height)) *
+                100
+            const newColor = Color.fromHSB({
+                hue,
+                saturation: Math.round(sat),
+                brightness: 100 - Math.round(bright),
+            })
+            if (!color.equals(newColor)) {
+                setColor(newColor)
+            }
+        },
+        [hue, color, setColor]
+    )
+
+    // === Mouse Handlers for Hue ===
+    const handleHueMouseDown = (e: React.MouseEvent) => {
+        updateHueFromPosition(e.clientX)
+        const handleMouseMove = (e: MouseEvent) =>
+            updateHueFromPosition(e.clientX)
+        const handleMouseUp = () => {
+            window.removeEventListener('mousemove', handleMouseMove)
+            window.removeEventListener('mouseup', handleMouseUp)
+        }
+        window.addEventListener('mousemove', handleMouseMove)
+        window.addEventListener('mouseup', handleMouseUp)
+    }
+
+    // === Mouse Handlers for Canvas ===
+    const handleCanvasMouseDown = (e: React.MouseEvent) => {
+        updateCanvasPosition(e.clientX, e.clientY)
+        const handleMouseMove = (e: MouseEvent) =>
+            updateCanvasPosition(e.clientX, e.clientY)
+        const handleMouseUp = () => {
+            window.removeEventListener('mousemove', handleMouseMove)
+            window.removeEventListener('mouseup', handleMouseUp)
+        }
+        window.addEventListener('mousemove', handleMouseMove)
+        window.addEventListener('mouseup', handleMouseUp)
+    }
 
     return (
-        <section className={styles.container}>
-            <canvas
-                ref={canvasRef}
-                width={canvasSize.width}
-                height={canvasSize.height}
-            />
-            <canvas ref={hueCanvasRef} width={canvasSize.width} height={16} />
-        </section>
+        <div className={styles.container}>
+            <Button
+                title="Picker"
+                onClick={handleClose}
+                style={{ backgroundColor: color.toString('HEX') }}
+                isIcon
+            >
+                <ColorPickerIcon />
+            </Button>
+            <Dropdown isActive={show} onClose={handleClose}>
+                <section className={clsx(styles.content, 'no-select')}>
+                    {/* SATURATION-VALUE CANVAS */}
+                    <div
+                        ref={canvasRef}
+                        style={{ background: canvasBackground }}
+                        className={styles.canvas}
+                        onMouseDown={handleCanvasMouseDown}
+                    >
+                        <motion.div
+                            className={styles.indicator}
+                            animate={canvasIndicatorStyle}
+                            transition={{ type: 'keyframes' }}
+                        />
+                    </div>
+
+                    {/* HUE SLIDER */}
+                    <div
+                        ref={hueSliderRef}
+                        style={{ background: sliderBackground() }}
+                        className={styles.slider}
+                        onMouseDown={handleHueMouseDown}
+                    >
+                        <motion.div
+                            className={styles.indicator}
+                            animate={{ left: `${huePercentage}%` }}
+                            transition={{ type: 'tween' }}
+                        />
+                    </div>
+                </section>
+            </Dropdown>
+        </div>
     )
 }
 
-export default CanvasColorPicker
+export default Picker

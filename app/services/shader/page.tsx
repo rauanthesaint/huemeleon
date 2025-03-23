@@ -1,56 +1,26 @@
 'use client'
 
 import { Container, Shades } from '@/components'
-import { Button, Input } from '@/ui'
-import { Controller, useForm } from 'react-hook-form'
 import styles from './page.module.scss'
-import { DiceFaces03Icon, PaintBoardIcon } from '@/public/icons'
-import { ChangeEvent } from 'react'
-import Color from '@/lib/color.class'
-import { getRandomHexColor } from '@/lib/color.utils'
-type FormValues = {
-    color: string
-}
+import { useEffect, useState } from 'react'
+import Color from '@/lib/color/color.class'
+import ColorInput from '@/components/ColorInput/component'
+import { useStore } from '@/app/hooks/useStore'
+
 export default function Page() {
-    const { setValue, control, watch } = useForm<FormValues>({
-        mode: 'onChange',
-        defaultValues: { color: '3AC061' },
-    })
+    const { state, dispatch } = useStore()
+    const [color, setColor] = useState<Color>(state.shader)
 
-    const handleClick = () => {
-        const randomColor = getRandomHexColor()
-        setValue('color', randomColor.toHEX().replace('#', ''))
-    }
+    useEffect(() => {
+        dispatch({ type: 'UPDATE_SHADER', payload: color })
+    }, [dispatch, color])
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setValue('color', event.target.value.toUpperCase())
-    }
     return (
         <Container as={'main'} className={styles.page}>
             <Container pref={100} max={320} className={styles.controller}>
-                <Controller
-                    control={control}
-                    name="color"
-                    render={({ field }) => (
-                        <Input
-                            icon={<PaintBoardIcon />}
-                            placeholder="000000"
-                            {...field}
-                            onChange={handleChange}
-                            action={
-                                <Button
-                                    isIcon
-                                    onClick={handleClick}
-                                    variant="secondary"
-                                >
-                                    <DiceFaces03Icon />
-                                </Button>
-                            }
-                        />
-                    )}
-                />
+                <ColorInput color={color} setColor={setColor} />
             </Container>
-            <Shades name="Primary" base={Color.fromHEX(watch('color'))} />
+            <Shades name="Primary" base={color} />
         </Container>
     )
 }
