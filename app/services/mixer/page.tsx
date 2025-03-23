@@ -6,7 +6,7 @@ import { Controller, useForm, useWatch } from 'react-hook-form'
 import { DiceFaces03Icon, PaintBoardIcon } from '@/public/icons'
 import { getRandomHexColor, mixColor } from '@/lib/color.utils'
 import { ChangeEvent, useMemo, useState } from 'react'
-import Color from '@/lib/color.class'
+import Color from '@/lib/color/color.class'
 import Notification from '@/ui/notification/notification'
 import clsx from 'clsx'
 
@@ -80,7 +80,7 @@ export default function Page() {
                 />
                 <div
                     style={{
-                        backgroundColor: Color.fromHEX(color_1).toHEX(),
+                        backgroundColor: Color.fromHEX(color_1).toString('HEX'),
                     }}
                     className={styles.preview}
                 />
@@ -94,7 +94,7 @@ export default function Page() {
                 <span>Result of Mixing</span>
                 <div
                     className={styles.preview}
-                    style={{ backgroundColor: result.toHEX() }}
+                    style={{ backgroundColor: result.toString('HEX') }}
                 />
                 <Input readOnly value={result.toHEX()} />
                 <Button onClick={handleCopy}>Copy</Button>
@@ -124,7 +124,7 @@ export default function Page() {
                 />
                 <div
                     style={{
-                        backgroundColor: Color.fromHEX(color_2).toHEX(),
+                        backgroundColor: Color.fromHEX(color_2).toString('HEX'),
                     }}
                     className={styles.preview}
                 />

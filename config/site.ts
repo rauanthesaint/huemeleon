@@ -4,9 +4,18 @@ import {
     TelegramIcon,
 } from '@/public/icons'
 
+interface Item {
+    title: string
+    link: string
+}
+
 type NavigationItem = {
     title: string
     href: string
+}
+
+interface SocialItem extends Item {
+    icon: React.ElementType
 }
 
 type LinkItem = {
@@ -20,13 +29,22 @@ export const siteConfig: {
     services: NavigationItem[]
     links: LinkItem[]
     navigation: NavigationItem[]
+    socials: SocialItem[]
 } = {
+    socials: [
+        {
+            title: 'Github',
+            link: 'https://github.com/rauanthesaint/huemeleon',
+            icon: Github01Icon,
+        },
+        {
+            title: 'Telegram',
+            link: 'https://t.me/huemeleon',
+            icon: TelegramIcon,
+        },
+    ],
     title: 'Huemeleon',
     navigation: [
-        // {
-        //     title: 'Home',
-        //     href: '/',
-        // },
         {
             title: 'Services',
             href: '/services/shader',
@@ -37,10 +55,10 @@ export const siteConfig: {
             title: 'Shader',
             href: '/services/shader',
         },
-        // {
-        //     title: 'Picker',
-        //     href: '/services/picker',
-        // },
+        {
+            title: 'Converter',
+            href: '/services/converter',
+        },
         {
             title: 'Mixer',
             href: '/services/mixer',

@@ -28,7 +28,8 @@ const Button: React.FC<ButtonProps> = ({
                 styles[variant],
                 isIcon && styles.icon,
                 isFullWidth && styles.fullWidth,
-                className
+                className,
+                'no-select'
             )}
             disabled={disabled}
             type={type}

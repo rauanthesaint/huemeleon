@@ -1,0 +1,29 @@
+$height: 0.75rem;
+
+.container {
+    .label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.25rem;
+    }
+}
+
+.slider {
+    background: var(--active-background);
+    border: 1px solid var(--border);
+    height: $height;
+    width: 100%;
+    border-radius: $height/2;
+    cursor: pointer;
+    position: relative;
+    .indicator {
+        background: var(--foreground);
+        height: $height;
+
+        aspect-ratio: 1;
+        border-radius: 50%;
+        position: absolute;
+        transform: translate(-$height/2) scale(1.25);
+    }
+}

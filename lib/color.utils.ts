@@ -1,4 +1,4 @@
-import Color from './color.class'
+import Color from './color/color.class'
 
 export function validateHexColor(color: string): boolean {
     const hexRegex = /^#[0-9A-Fa-f]{6}$/

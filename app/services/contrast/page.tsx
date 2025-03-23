@@ -7,35 +7,57 @@ import styles from './page.module.scss'
 import { PaintBoardIcon } from '@/public/icons'
 import { getContrast } from '@/lib/color.utils'
 import { Controller, useForm } from 'react-hook-form'
-import Color from '@/lib/color.class'
+import Color from '@/lib/color/color.class'
 import clsx from 'clsx'
+import { useEffect, useMemo } from 'react'
+import { useStore } from '@/app/hooks/useStore'
+
+type Values = {
+    foreground: string
+    background: string
+}
+
+const interpreter = (contrast: number) => {
+    if (contrast < 3) {
+        return 'low'
+    } else if (contrast >= 3 && contrast < 7) {
+        return 'good'
+    } else {
+        return 'high'
+    }
+}
 
 export default function Page() {
-    type Values = {
-        foreground: string
-        background: string
-    }
+    const { state, dispatch } = useStore()
 
     const { control, watch } = useForm<Values>({
         mode: 'onChange',
-        defaultValues: { foreground: 'D5D5B1', background: '191411' },
+        defaultValues: {
+            foreground: state.contrast.text.toHEX(),
+            background: state.contrast.background.toHEX(),
+        },
     })
 
-    const foreground: Color = Color.fromHEX(watch('foreground'))
-    const background: Color = Color.fromHEX(watch('background'))
+    const { foreground: foregroundValue, background: backgroundValue } = watch()
+
+    const foreground: Color = useMemo(
+        () => Color.fromHEX(foregroundValue),
+        [foregroundValue]
+    )
+    const background: Color = useMemo(
+        () => Color.fromHEX(backgroundValue),
+        [backgroundValue]
+    )
+
     const contrast = getContrast(foreground, background)
 
-    const interpreter = (contrast: number) => {
-        if (contrast < 3) {
-            return 'low'
-        } else if (contrast >= 3 && contrast < 7) {
-            return 'good'
-        } else {
-            return 'high'
-        }
-    }
-
     const interpretation = interpreter(contrast).toUpperCase()
+    useEffect(() => {
+        dispatch({
+            type: 'UPDATE_CONTRAST',
+            payload: { text: foreground, background: background },
+        })
+    }, [dispatch, background, foreground])
 
     return (
         <Container as={'main'}>
@@ -74,7 +96,7 @@ export default function Page() {
                                 styles[interpreter(contrast)]
                             )}
                         >
-                            {contrast}
+                            {contrast.toString()}
                         </span>
                         <span className={'label sm'}>
                             {interpretation} contrast
@@ -83,8 +105,8 @@ export default function Page() {
                 </section>
                 <section
                     style={{
-                        backgroundColor: background.toHEX(),
-                        color: foreground.toHEX(),
+                        backgroundColor: background.toString('HEX'),
+                        color: foreground.toString('HEX'),
                     }}
                     className={styles.preview}
                 >

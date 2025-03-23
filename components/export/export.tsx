@@ -1,6 +1,6 @@
 'use client'
 
-import Color from '@/lib/color.class'
+import Color from '@/lib/color/color.class'
 import { Button, Modal } from '@/ui'
 import { JSX, useCallback, useEffect, useRef, useState } from 'react'
 
@@ -37,10 +37,10 @@ const Export = ({ shades, name }: { shades: Color[]; name: string }) => {
                         const { hue, saturation, lightness } = color.toHSL()
                         return `hsl(${hue}, ${saturation}%, ${lightness}%)`
                     }
-                    case 'LCH': {
-                        const { lightness, chroma, hue } = color.toLCH()
-                        return `lch(${lightness}%, ${chroma}%, ${hue})`
-                    }
+                    // case 'LCH': {
+                    //     const { lightness, chroma, hue } = color.toLCH()
+                    //     return `lch(${lightness}%, ${chroma}%, ${hue})`
+                    // }
                     default:
                         return color.toHEX()
                 }
@@ -56,11 +56,12 @@ const Export = ({ shades, name }: { shades: Color[]; name: string }) => {
                     return detectFormat(format).map((elem, index) => (
                         <li key={`${name}-${index}`} className="mono">
                             <span className={styles.variable__name}>
-                                {`$${name}--${KEYS[index]}: `}
+                                {`$color-${name}-${KEYS[index]}: `}
                             </span>
                             <span className={styles.variable__value}>
                                 {elem}
                             </span>
+                            ;
                         </li>
                     ))
                 case 'Figma':
@@ -95,11 +96,12 @@ const Export = ({ shades, name }: { shades: Color[]; name: string }) => {
                     return detectFormat(format).map((elem, index) => (
                         <li key={`${name}-${index}`} className="mono">
                             <span className={styles.variable__name}>
-                                {`--${name}--${KEYS[index]}: `}
+                                {`--color-${name}-${KEYS[index]}: `}
                             </span>
                             <span className={styles.variable__value}>
                                 {elem}
                             </span>
+                            ;
                         </li>
                     ))
             }
